@@ -50,5 +50,6 @@ variant ID in `data/commerce.json`. Real orders also need the Shopify store laun
 `main` is served by GitHub Pages. Preview: https://benergy80.github.io/titobi.com/ (no custom domain yet).
 To go live on titobi.com: Max's GoDaddy DNS gets the four GitHub A records + `www` CNAME to
 `benergy80.github.io`, then add a `CNAME` file containing `titobi.com` and enforce HTTPS in the Pages settings.
-Run the build/sync scripts, check locally, then commit and push. `.private/` is git-ignored and holds
+Run the build/sync scripts, check locally, run `python3 scripts/stamp_version.py` (cache-busts CSS/JS),
+then commit and push. `.private/` is git-ignored and holds
 internal material: the raw product source with notes, the Shopify theme reference and the image spec.
