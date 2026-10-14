@@ -356,7 +356,7 @@ function renderProduct(main) {
     .map((src) => `<div class="gallery__item is-drawing"><img src="${src}" alt="" loading="lazy"></div>`).join("");
   const photos = views.map(([v, src]) => `<div class="gallery__item"><img ${v === "hero" ? 'id="main-img" ' : ""}src="${v === "hero" ? productImage(p, finish) : src}" alt="${v === "hero" ? esc(p.name) : ""}" ${v === "hero" ? "" : 'loading="lazy"'}></div>`).join("");
   const gallery = photos + drawings || `<div class="gallery__item is-placeholder"><img src="${typologyImage(p.collection)}" alt=""></div>`;
-  const viewer = model ? `<div class="gallery__item"><model-viewer src="${modelSrc(p, finish)}" camera-controls shadow-intensity="0.4" exposure="1.1" alt="3D model of the ${esc(p.name)}" loading="lazy"></model-viewer></div>` : "";
+  const viewer = model ? `<div class="gallery__item"><model-viewer src="${modelSrc(p, finish)}" camera-controls tone-mapping="agx" shadow-intensity="0.4" exposure="1.1" alt="3D model of the ${esc(p.name)}" loading="lazy"></model-viewer></div>` : "";
   const dims = productFile(p, "dims");
   const downloads = [
     model && `<a class="u" href="${model}" download>3D model (GLB)</a>`,
