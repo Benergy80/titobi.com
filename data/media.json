@@ -110,6 +110,8 @@
    "finish-white-oak.jpg",
    "front.jpg",
    "hero.jpg",
+   "line-front.png",
+   "line-front.svg",
    "line-side.png",
    "line-side.svg",
    "line.png",
@@ -200,8 +202,6 @@
   "dining-table": [
    "back.jpg",
    "detail-2.jpg",
-   "detail-line-1.png",
-   "detail-line-1.svg",
    "detail-line-2.png",
    "detail-line-2.svg",
    "dims.png",
@@ -223,6 +223,7 @@
    "line.svg",
    "set-line.png",
    "set-line.svg",
+   "set.jpg",
    "side.jpg"
   ],
   "lounge-chair": [
@@ -406,6 +407,7 @@
    "side.jpg"
   ],
   "tower": [
+   "back.jpg",
    "detail-1.jpg",
    "detail-2.jpg",
    "detail-line-1.png",
@@ -416,6 +418,13 @@
    "dims.svg",
    "exploded-line.png",
    "exploded-line.svg",
+   "finish-baltic-birch.jpg",
+   "finish-maple.jpg",
+   "finish-walnut.jpg",
+   "finish-wenge.jpg",
+   "finish-white-oak.jpg",
+   "front.jpg",
+   "hero.jpg",
    "line-front.png",
    "line-front.svg",
    "line-side.png",
@@ -480,6 +489,7 @@
   ]
  },
  "site": [
+  "dining-set.jpg",
   "hero-1a.jpg",
   "hero-2b.jpg",
   "lineup.json",
@@ -522,5 +532,5 @@
   "wall-shelf",
   "work-wall"
  ],
- "lookbook": false
+ "lookbook": true
 }

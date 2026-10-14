@@ -15,6 +15,8 @@ STATUS.md board. This script copies only what those lines release (see IMAGE_NEE
   "- HH:MM lookbook final ..."     web/lookbook/ -> lookbook/
   "- HH:MM A: glbs final"          models/gazelle-<slug>.glb -> media/models/<slug>.glb
                                    (and per-finish gazelle-<slug>--<finish>.glb, if made)
+  A file rewritten more than 2 min after the line that released it is work in progress: the copy the
+  site already has stays, until a newer line releases it.
 
 Then it rewrites data/media.json, which the pages read to decide what to show.
 Never reads renders/_superseded-*.
@@ -24,6 +26,7 @@ import re
 import shutil
 import subprocess
 import sys
+from datetime import datetime, timedelta
 from fnmatch import fnmatch
 from pathlib import Path
 
@@ -32,6 +35,7 @@ STATUS = Path("/private/tmp/claude-501/-Users-benstagl/5b215239-d211-4003-b1ce-b
 SITE = Path(__file__).resolve().parent.parent
 MEDIA = SITE / "media"
 MAX_W = 1600
+GRACE_S = 120  # a release line's HH:MM is posted just after its files are written
 STAMP = r"^- \d{1,2}:\d{2} "  # milestone lines start "- HH:MM "; quoted mentions elsewhere don't count
 WEB_IMG = re.compile(STAMP + r".*?web images final:\s*(.+)")
 SLUG_VIEWS = re.compile(r"(?<![\w./-])((?:[a-z0-9-]+,\s*)*[a-z0-9-]+)\s*\(([a-z0-9*, -]+)(?:;[^()]*)?\)")  # views end at ";" notes  # "armchair, stool (line, hero)"
@@ -45,6 +49,32 @@ QA_GATES = {("_site", "hero-1a"): "hero-1a"}
 
 def status_lines() -> list[str]:
     return STATUS.read_text().splitlines() if STATUS.exists() else []
+
+
+def line_times(lines: list[str]) -> list[float | None]:
+    """Epoch time of each "- HH:MM" line. The board only has clock times, so the last line is dated by
+    STATUS.md's mtime and each jump back of more than 6 h, reading upward, is a day earlier."""
+    out: list[float | None] = [None] * len(lines)
+    if not STATUS.exists():
+        return out
+    day = datetime.fromtimestamp(STATUS.stat().st_mtime).replace(hour=0, minute=0, second=0, microsecond=0)
+    later = None
+    for i in range(len(lines) - 1, -1, -1):
+        m = re.match(r"^- (\d{1,2}):(\d{2}) ", lines[i])
+        if not m:
+            continue
+        t = day.replace(hour=int(m.group(1)), minute=int(m.group(2)))
+        if later is not None and t > later + timedelta(hours=6):
+            day -= timedelta(days=1)
+            t -= timedelta(days=1)
+        out[i] = t.timestamp()
+        later = t
+    return out
+
+
+def unreleased(src: Path, released_at: float | None) -> bool:
+    """True when the file was rewritten after the line that released it (work in progress, not yet announced)."""
+    return released_at is not None and src.stat().st_mtime > released_at + GRACE_S
 
 
 def posted(lines: list[str], milestone: str) -> bool:
@@ -92,8 +122,8 @@ def stems_on_disk(slug: str) -> list[str]:
     return sorted({f.stem for f in d.iterdir() if f.is_file() and not f.name.startswith((".", "_"))}) if d.is_dir() else []
 
 
-def released_files(lines: list[str]) -> set[tuple[str, str]]:
-    """(folder, stem-pattern) pairs that are released and not on hold, in board order."""
+def released_files(lines: list[str]) -> dict[tuple[str, str], int]:
+    """(folder, stem-pattern) pairs that are released and not on hold, in board order -> index of the releasing line."""
     state: dict[tuple[str, str], bool] = {}
     released_at: dict[tuple[str, str], int] = {}
     for i, line in enumerate(lines):
@@ -118,15 +148,30 @@ def released_files(lines: list[str]) -> set[tuple[str, str]]:
                 state[key] = False
         for key in qa_failures(line) + qa_open(line, state):
             state[key] = False
-    released = {k for k, ok in state.items() if ok}
+    released = {k: released_at[k] for k, ok in state.items() if ok}
     for key, name in QA_GATES.items():
         if key not in released:
             continue
         passed = any(re.match(STAMP + "G: ", l) and re.search(rf"\b{re.escape(name)}( v\d+)? PASS", l)
                      for l in lines[released_at[key] + 1:])
         if not passed:
-            released.discard(key)
+            del released[key]
     return released
+
+
+def model_release_times(lines: list[str], times: list[float | None]) -> dict[str, float]:
+    """slug -> time of the latest "X: glbs final ..." line naming gazelle-<slug>.glb, the slug, or ALL."""
+    out: dict[str, float] = {}
+    slugs = sorted({g.stem.removeprefix("gazelle-") for g in (GAZELLE / "models").glob("gazelle-*.glb")}, key=len)
+    for line, t in zip(lines, times):
+        if t is None or not re.match(STAMP + r"[A-Z]: .*glbs final", line):
+            continue
+        named = [s for s in slugs if re.search(rf"(?:gazelle-|(?<![\w-])){re.escape(s)}(?![\w-])", line)]
+        if re.search(r"\bALL\b", line) or not named:  # "glbs final: ALL 18 ..." / the first, bare "A: glbs final"
+            named = slugs
+        for s in named:
+            out[s] = t
+    return out
 
 
 def newer(src: Path, dst: Path) -> bool:
@@ -159,16 +204,23 @@ def main() -> int:
     manifest = {"products": {}, "site": [], "models": [], "lookbook": False}
 
     released = released_files(lines)
+    times = line_times(lines)
     for folder in sorted({f for f, _ in released}):
         src_dir = GAZELLE / "web" / "images" / folder
         target = MEDIA / ("site" if folder == "_site" else f"products/{folder}")
-        patterns = [stem for f, stem in released if f == folder]
+        patterns = {stem: times[i] for (f, stem), i in released.items() if f == folder}
         names = []
         if src_dir.is_dir():
             for f in sorted(src_dir.iterdir()):
-                if f.suffix.lower() in {".jpg", ".jpeg", ".png", ".svg", ".mp4", ".json"} and any(fnmatch(f.stem, pat) for pat in patterns):
-                    copy_image(f, target / f.name)
-                    names.append(f.name)
+                hits = [t for pat, t in patterns.items() if fnmatch(f.stem, pat)]
+                if f.suffix.lower() not in {".jpg", ".jpeg", ".png", ".svg", ".mp4", ".json"} or not hits:
+                    continue
+                if unreleased(f, max((t for t in hits if t), default=None)):
+                    if (target / f.name).exists():  # keep the released copy we already have
+                        names.append(f.name)
+                    continue
+                copy_image(f, target / f.name)
+                names.append(f.name)
         if names:
             if folder == "_site":
                 manifest["site"] = names
@@ -185,12 +237,17 @@ def main() -> int:
         if d.name != "site" and not any(d.iterdir()):
             d.rmdir()
 
-    if any(re.match(STAMP + r"[A-Z]: (glbs final|all renders final)", l) for l in lines):
+    model_times = model_release_times(lines, times)
+    if model_times:
         for glb in sorted((GAZELLE / "models").glob("gazelle-*.glb")):
             slug = glb.stem.removeprefix("gazelle-")
             if slug in {"desk-48", "dining-set-10"} or slug.startswith("showroom-"):  # stale files the Gazelle session said to ignore; room scenes aren't products
                 continue
             dst = MEDIA / "models" / f"{slug}.glb"
+            if unreleased(glb, model_times.get(slug)):  # rewritten since its glbs final line: keep what we have
+                if dst.exists():
+                    manifest["models"].append(slug)
+                continue
             if newer(glb, dst):
                 dst.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(glb, dst)

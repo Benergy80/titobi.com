@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gazelle Collection</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,400&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>/* Layout: catalog on white. Masthead, hero room, shop-photo signatures, product cards (4:5, finish switcher, hover to drawing), armchair spread, drawings, exploded, rooms, new pieces, materials, files. */
+:root {
+  color-scheme: light;
+  --paper: #ffffff;
+  --plate: #f6f5f3;
+  --ink: #241b16;
+  --muted: #6e645b;
+  --rule: #e4e0da;
+  --ply: #8c5a2e;
+  --chip-bg: #f7f5f2;
+  --display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --body: "Hanken Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --f-baltic-birch: #e6cfa6; --f-walnut: #5e3b28; --f-white-oak: #cdb084; --f-wenge: #2e221c; --f-maple: #efdcbc;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--paper); }
+body { color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.55; margin: 0; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 48px); padding-block: 0 72px; }
+img { max-width: 100%; height: auto; display: block; }
+code { font-family: var(--mono); font-size: 12px; color: var(--ply); }
+
+header.mast { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 24px; padding-block: 40px 22px; border-bottom: 1px solid var(--rule); }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.eyebrow .logo { width: 72px; height: auto; display: inline-block; }
+h1 { font-family: var(--display); font-weight: 400; font-size: clamp(44px, 7vw, 92px); line-height: .95; letter-spacing: -.01em; margin: 10px 0 0; text-wrap: balance; }
+h1 em { font-style: italic; color: var(--ply); }
+h1 .by { display: block; font-family: var(--body); font-size: clamp(15px, 1.5vw, 19px); letter-spacing: .02em; color: var(--muted); margin-top: 12px; font-weight: 500; }
+.mast-meta { font-family: var(--mono); font-size: 12px; color: var(--muted); text-align: right; display: grid; gap: 4px; }
+.mast-meta b { color: var(--ink); font-weight: 500; }
+
+.hero { margin-top: 28px; }
+.hero figure, figure { margin: 0; }
+.hero img { width: 100%; border-radius: 2px; }
+.hero figcaption { margin-top: 14px; color: var(--muted); max-width: 70ch; }
+
+section.block { padding-block: 56px 48px; border-bottom: 1px solid var(--rule); }
+.head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 40px; align-items: end; margin-bottom: 28px; }
+h2 { font-family: var(--display); font-weight: 400; font-size: clamp(30px, 3.6vw, 44px); line-height: 1.08; margin: 0; text-wrap: balance; }
+.head p { margin: 0; color: var(--muted); max-width: 62ch; }
+figcaption { font-size: 14px; color: var(--muted); margin-top: 8px; }
+
+.sig { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
+.sig figure { display: grid; gap: 10px; align-content: start; }
+.sig img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 2px; }
+.sig b { display: block; font-weight: 600; font-size: 15px; }
+.sig span { color: var(--muted); font-size: 14px; }
+
+.family { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 36px 0 18px; }
+.grid.three { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px 28px; }
+.card { display: grid; gap: 10px; align-content: start; }
+.card .img { position: relative; background: var(--paper); border-radius: 2px; overflow: hidden; aspect-ratio: 4 / 5; }
+.card .img img { width: 100%; height: 100%; object-fit: cover; transition: opacity .25s ease; }
+.card .img .ln { position: absolute; inset: 0; background: var(--paper); opacity: 0; }
+.card .img:hover .ln { opacity: 1; }
+.card .img img.swap { opacity: .35; }
+.card h3 { font-family: var(--display); font-weight: 400; font-size: 24px; line-height: 1.1; margin: 0; }
+.card p { margin: 0; color: var(--muted); font-size: 15px; max-width: 58ch; }
+.dims { font-family: var(--mono); font-size: 12px; color: var(--ink); font-variant-numeric: tabular-nums; display: flex; flex-wrap: wrap; gap: 4px 12px; }
+.dims span { color: var(--muted); }
+.tag { justify-self: start; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; padding: 3px 9px; border-radius: 99px; background: var(--chip-bg); border: 1px solid var(--rule); color: var(--ply); }
+.finishes { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.finishes button { width: 26px; height: 26px; padding: 3px; border-radius: 50%; border: 1px solid var(--rule); background: var(--paper); cursor: pointer; }
+.finishes button i { display: block; width: 100%; height: 100%; border-radius: 50%; background: var(--sw); box-shadow: inset 0 0 0 1px rgba(0,0,0,.08); }
+.finishes button[aria-pressed="true"] { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
+.finishes button:focus-visible { outline: 2px solid var(--ply); outline-offset: 2px; }
+.finishes .fname { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-left: 4px; }
+.allfin { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: -8px 0 8px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.allfin .fname { display: none; }
+
+.spread { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; }
+.spread.two { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 24px; }
+.lineup img { width: 100%; }
+.typ { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin-top: 32px; max-width: 900px; }
+.typ figcaption { text-align: center; color: var(--ink); font-size: 15px; }
+.dimsrow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 32px; }
+.exl { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px 16px; }
+.rooms { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 16px; }
+.rooms img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 2px; }
+.sq { max-width: 640px; }
+.newd { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.6fr); gap: 28px; align-items: start; }
+.built { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.ply { max-width: 760px; margin-bottom: 24px; }
+.mat { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; }
+.mat img { aspect-ratio: 1 / 1; object-fit: cover; border-radius: 2px; }
+.mat b { display: block; color: var(--ink); }
+.spec { margin-top: 28px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--rule); }
+.spec div { padding: 14px 16px 14px 0; border-bottom: 1px solid var(--rule); }
+.spec dt { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.spec dd { margin: 4px 0 0; font-size: 18px; }
+.files { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 40px; }
+.files ul { margin: 0; padding: 0; }
+.files li { list-style: none; padding: 14px 0; border-top: 1px solid var(--rule); }
+.files b { display: block; font-weight: 600; }
+.files code { word-break: break-all; }
+.files span { color: var(--muted); font-size: 14px; display: block; }
+footer { margin-top: 48px; font-family: var(--mono); font-size: 12px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px 24px; }
+
+@media (max-width: 960px) {
+  .sig, .exl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid.three, .rooms, .built { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .spread { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .mat { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .spec { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .newd { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+  header.mast, .head, .grid.three, .files, .rooms, .spread.two, .dimsrow { grid-template-columns: minmax(0, 1fr); }
+  .spread, .built, .typ { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .mast-meta { text-align: left; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <div>
+      <div class="eyebrow"><img class="logo" src="img/w/_site/logo.svg" alt="Titobi" width="96" height="30"> · series prototype · October 2026</div>
+      <h1>The <em>Gazelle</em> Collection <span class="by">by Titobi Studios · Norman Teague and Max Davis</span></h1>
+    </div>
+    <div class="mast-meta">
+      <span>17 pieces · 7 from shop files · 5 finishes</span>
+      <span>Baltic birch · <b>18 mm plies · 5/8" roundover</b></span>
+      <span>Rooms, materials and concepts made in Vectary</span>
+    </div>
+  </header>
+  <section class="hero"><figure><img src="img/w/_site/scene-dining.jpg" alt="The Dining Table in walnut with ten Gazelle Armchairs." width="2000" height="1125"><figcaption>The Dining Table in walnut with ten Gazelle Armchairs. Rendered from the final models; the room is a Vectary realism pass.</figcaption></figure></section>
+
+  <section class="block" id="signatures">
+    <div class="head"><h2>What makes it Gazelle</h2>
+      <p>Every piece is cut on the CNC from 18 mm Baltic birch and laminated in pairs to 36 mm. Each ply is rounded over 5/8" on its outer face, so every edge shows its laminations as stripes that follow the outline. These details come from Titobi’s shop files and shop photos.</p></div>
+    <div class="sig">
+      <figure><img src="sig/node.jpg" alt="Cross node where a shelf arm leaves a laminated upright" width="900" height="800" loading="lazy"><b>Cross nodes</b><span>Posts are laminated around the shelf arms, so every arm locks into its upright.</span></figure>
+      <figure><img src="sig/stacked.jpg" alt="Two-ply shelves with rounded edges" width="900" height="1008" loading="lazy"><b>Two-ply shelves</b><span>Each shelf is two plies over a center rail, U-notched around the posts.</span></figure>
+      <figure><img src="sig/topbend.jpg" alt="Upright bending back to the wall under a stepped top rail" width="900" height="737" loading="lazy"><b>Top bend</b><span>Uprights bend back to the wall under a level, stepped two-ply rail.</span></figure>
+      <figure><img src="sig/underdesk.jpg" alt="Drawer hanging under a desk top from stepped rails" width="900" height="522" loading="lazy"><b>Under the desk</b><span>Stepped rails drop from the top to cradle a hanging drawer.</span></figure>
+      <figure><img src="sig/endframe.jpg" alt="Desk end frame with splayed legs and a rounded yoke" width="886" height="900" loading="lazy"><b>A-frame ends</b><span>Splayed legs turn over into a rounded yoke under the top.</span></figure>
+      <figure><img src="sig/chair.jpg" alt="Gazelle armchair joints with brass hardware" width="900" height="900" loading="lazy"><b>Y-junctions and brass</b><span>Members fork through soft Y fillets, pinned with brass.</span></figure>
+      <figure><img src="sig/ladder.jpg" alt="Ladder side frame with rounded triangular openings" width="833" height="900" loading="lazy"><b>Ladder frames</b><span>Side frames are single profiles with rounded openings.</span></figure>
+      <figure><img src="sig/base.jpg" alt="Base rails with rounded ends" width="900" height="632" loading="lazy"><b>Finger ends</b><span>Rails run past every joint and finish in a rounded end.</span></figure>
+    </div>
+  </section>
+
+  <section class="block" id="products">
+    <div class="head"><h2>The collection</h2>
+      <p>Seven pieces come straight from Titobi’s shop files; the rest are built from those files’ parts and construction. The dining table was designed in Vectary for the set. Every piece comes in Baltic birch and four hardwoods. Hover a piece for its drawing.</p></div>
+    <div class="allfin"><span>Show every piece in</span><div class="finishes" role="group" aria-label="Finish for all pieces" data-all><button type="button" data-f="baltic-birch" aria-label="Baltic birch" title="Baltic birch" aria-pressed="false"><i style="--sw:var(--f-baltic-birch)"></i></button><button type="button" data-f="walnut" aria-label="Walnut" title="Walnut" aria-pressed="false"><i style="--sw:var(--f-walnut)"></i></button><button type="button" data-f="white-oak" aria-label="White oak" title="White oak" aria-pressed="false"><i style="--sw:var(--f-white-oak)"></i></button><button type="button" data-f="wenge" aria-label="Wenge" title="Wenge" aria-pressed="false"><i style="--sw:var(--f-wenge)"></i></button><button type="button" data-f="maple" aria-label="Maple" title="Maple" aria-pressed="false"><i style="--sw:var(--f-maple)"></i></button><span class="fname"></span></div></div>
+    <div class="family">Seating</div><div class="grid three"><article class="card" data-slug="armchair" data-default="baltic-birch">
+        <div class="img"><img src="img/w/armchair/finish-baltic-birch.jpg" alt="Gazelle Armchair in Baltic birch" width="1000" height="1250" loading="lazy"><img class="ln" src="img/w/armchair/line.png" alt="" aria-hidden="true" width="1000" height="1250" loading="lazy"></div>
+        <div class="finishes" role="group" aria-label="Finish"><button type="button" data-f="baltic-birch" aria-label="Baltic birch" title="Baltic birch" aria-pressed="true"><i style="--sw:var(--f-baltic-birch)"></i></button><button type="button" data-f="walnut" aria-label="Walnut" title="Walnut" aria-pressed="false"><i style="--sw:var(--f-walnut)"></i></button><button type="button" data-f="white-oak" aria-label="White oak" title="White oak" aria-pressed="false"><i style="--sw:var(--f-white-oak)"></i></button><button type="button" data-f="wenge" aria-label="Wenge" title="Wenge" aria-pressed="false"><i style="--sw:var(--f-wenge)"></i></button><button type="button" data-f="maple" aria-label="Maple" title="Maple" aria-pressed="false"><i style="--sw:var(--f-maple)"></i></button><span class="fname"></span></div>
+        <span class="tag">Shop file</span>
+        <h3>Gazelle Armchair</h3>
+        <div class="dims">22.8 × 21.4 × 31 in <span>580 × 545 × 785 mm</span> <span>seat 18.2"</span></div>
+        <p>The horseshoe armchair. 51 parts from the shop file, each laminated along its own axis, pinned with brass.</p>
+      </article><article class="card" data-slug="side-chair" data-default="baltic-birch">
+        <div class="img"><img src="img/w/side-chair/finish-baltic-birch.jpg" alt="Gazelle Side Chair in Baltic birch" width="1000" height="1250" loading="lazy"><img class="ln" src="img/w/side-chair/line.png" alt="" aria-hidden="true" width="1000" height="1250" loading="lazy"></div>
+        <div class="finishes" role="group" aria-label="Finish"><button type="button" data-f="baltic-birch" aria-label="Baltic birch" title="Baltic birch" aria-pressed="true"><i style="--sw:var(--f-baltic-birch)"></i></button><button type="button" data-f="walnut" aria-label="Walnut" title="Walnut" aria-pressed="false"><i style="--sw:var(--f-walnut)"></i></button><button type="button" data-f="white-oak" aria-label="White oak" title="White oak" aria-pressed="false"><i style="--sw:var(--f-white-oak)"></i></button><button type="button" data-f="wenge" aria-label="Wenge" title="Wenge" aria-pressed="false"><i style="--sw:var(--f-wenge)"></i></button><button type="button" data-f="maple" aria-label="Maple" title="Maple" aria-pressed="false"><i style="--sw:var(--f-maple)"></i></button><span class="fname"></span></div>
+        <span class="tag">Shop file</span>
+        <h3>Gazelle Side Chair</h3>
+        <div class="dims">22.8 × 21.4 × 31 in <span>580 × 545 × 785 mm</span> <span>seat 18.4"</span></div>
+        <p>The same frame with a lighter back. 26 parts.</p>
+      </article><article class="card" data-slug="bullhorn-chair" data-default="baltic-birch">
+        <div class="img"><img src="img/w/bullhorn-chair/finish-baltic-birch.jpg" alt="Gazelle Bullhorn Chair in Baltic birch" width="1000" height="1250" loading="lazy"><img class="ln" src="img/w/bullhorn-chair/line.png" alt="" aria-hidden="true" width="1000" height="1250" loading="lazy"></div>
+        <div class="finishes" role="group" aria-label="Finish"><button type="button" data-f="baltic-birch" aria-label="Baltic birch" title="Baltic birch" aria-pressed="true"><i style="--sw:var(--f-baltic-birch)"></i></button><button type="button" data-f="walnut" aria-label="Walnut" title="Walnut" aria-pressed="false"><i style="--sw:var(--f-walnut)"></i></button><button type="button" data-f="white-oak" aria-label="White oak" title="White oak" aria-pressed="false"><i style="--sw:var(--f-white-oak)"></i></button><button type="button" data-f="wenge" aria-label="Wenge" title="Wenge" aria-pressed="false"><i style="--sw:var(--f-wenge)"></i></button><button type="button" data-f="maple" aria-label="Maple" title="Maple" aria-pressed="false"><i style="--sw:var(--f-maple)"></i></button><span class="fname"></span></div>
+        <span class="tag">Shop file</span>
+        <h3>Gazelle Bullhorn Chair</h3>
+        <div class="dims">22.8 × 21.4 × 31 in <span>580 × 545 × 785 mm</span> <span>seat 18.4"</span></div>
+        <p>The back rail sweeps out past the posts like horns. 27 parts.</p>
+      </article><article class="card" data-slug="stool-with-back" data-default="baltic-birch">
+        <div class="img"><img src="img/w/stool-with-back/finish-baltic-birch.jpg" alt="Gazelle Stool with Back in Baltic birch" width="1000" height="1250" loading="lazy"><img class="ln" src="img/w/stool-with-back/line.png" alt="" aria-hidden="true" width="1000" height="1250" loading="lazy"></div>
+        <div class="finishes" role="group" aria-label="Finish"><button type="button" data-f="baltic-birch" aria-label="Baltic birch" title="Baltic birch" aria-pressed="true"><i style="--sw:var(--f-baltic-birch)"></i></button><button type="button" data-f="walnut" aria-label="Walnut" title="Walnut" aria-pressed="false"><i style="--sw:var(--f-walnut)"></i></button><button type="button" data-f="white-oak" aria-label="White oak" title="White oak" aria-pressed="false"><i style="--sw:var(--f-white-oak)"></i></button><button type="button" data-f="wenge" aria-label="Wenge" title="Wenge" aria-pressed="false"><i style="--sw:var(--f-wenge)"></i></button><button type="button" data-f="maple" aria-label="Maple" title="Maple" aria-pressed="false"><i style="--sw:var(--f-maple)"></i></button><span class="fname"></span></div>
+        <span class="tag">Shop file</span>
+        <h3>Gazelle Stool with Back</h3>
+        <div class="dims">13.5 × 19 × 39.4 in <span>345 × 485 × 1000 mm</span> <span>seat 33.0"</span></div>
+        <p>Counter stool with a low back, on lattice side frames. 30 parts.</p>
+      </article><article class="card" data-slug="stool" data-default="baltic-birch">
+        <div class="img"><img src="img/w/stool/finish-baltic-birch.jpg" alt="Gazelle Stool in Baltic birch" width="1000" height="1250" loading="lazy"><img class="ln" src="img/w/stool/line.png" alt="" aria-hidden="true" width="1000" height="1250" loading="lazy"></div>
+        <div class="finishes" role="group" aria-label="Finish"><button type="button" data-f="baltic-birch" aria-label="Baltic birch" title="Baltic birch" aria-pressed="true"><i style="--sw:var(--f-baltic-birch)"></i></button><button type="button" data-f="walnut" aria-label="Walnut" title="Walnut" aria-pressed="false"><i style="--sw:var(--f-walnut)"></i></button><button type="button" data-f="white-oak" aria-label="White oak" title="White oak" aria-pressed="false"><i style="--sw:var(--f-white-oak)"></i></button><button type="button" data-f="wenge" aria-label="Wenge" title="Wenge" aria-pressed="false"><i style="--sw:var(--f-wenge)"></i></button><button type="button" data-f="maple" aria-label="Maple" title="Maple" aria-pressed="false"><i style="--sw:var(--f-maple)"></i></button><span class="fname"></span></div>
+        <span class="tag">Shop file</span>
+        <h3>Gazelle Stool</h3>
+        <div class="dims">13.5 × 18.7 × 33 in <span>345 × 475 × 840 mm</span> <span>seat 33.0"</span></div>
+        <p>The backless counter stool. 27 parts.</p>
+      </article><article class="card" data-slug="lounge-chair" data-default="baltic-birch">
+        <div class="img"><img src="img/w/lounge-chair/finish-baltic-birch.jpg" alt="Gazelle Lounge Chair in Baltic birch" width="1000" height="1250" loading="lazy"><img class="ln" src="img/w/lounge-chair/line.png" alt="" aria-hidden="true" width="1000" height="1250" loading="lazy"></div>
+        <div class="finishes" role="group" aria-label="Finish"><button type="button" data-f="baltic-birch" aria-label="Baltic birch" title="Baltic birch" aria-pressed="true"><i style="--sw:var(--f-baltic-birch)"></i></button><button type="button" data-f="walnut" aria-label="Walnut" title="Walnut" aria-pressed="false"><i style="--sw:var(--f-walnut)"></i></button><button type="button" data-f="white-oak" aria-label="White oak" title="White oak" aria-pressed="false"><i style="--sw:var(--f-white-oak)"></i></button><button type="button" data-f="wenge" aria-label="Wenge" title="Wenge" aria-pressed="false"><i style="--sw:var(--f-wenge)"></i></button><button type="button" data-f="maple" aria-label="Maple" title="Maple" aria-pressed="false"><i style="--sw:var(--f-maple)"></i></button><span class="fname"></span></div>
+        <span class="tag">New</span>
+        <h3>Gazelle Lounge Chair</h3>
+        <div class="dims">25.2 × 21.4 × 29.9 in <span>640 × 545 × 760 mm</span> <span>seat 15.4"</span></div>
+        <p>Low and wide, with a raked back panel set between the arms. First drawn in Vectary, then built from the armchair’s own parts.</p>
+      </article><article class="card" data-slug="rocker" data-default="baltic-birch">
+        <div class="img"><img src="img/w/rocker/finish-baltic-birch.jpg" alt="Gazelle Rocker in Baltic birch" width="1000" height="1250" loading="lazy"><img class="ln" src="img/w/rocker/line.png" alt="" aria-hidden="true" width="1000" height="1250" loading="lazy"></div>
+        <div class="finishes" role="group" aria-label="Finish"><button type="button" data-f="baltic-birch" aria-label="Baltic birch" title="Baltic birch" aria-pressed="true"><i style="--sw:var(--f-baltic-birch)"></i></button><button type="button" data-f="walnut" aria-label="Walnut" title="Walnut" aria-pressed="false"><i style="--sw:var(--f-walnut)"></i></button><button type="button" data-f="white-oak" aria-label="White oak" title="White oak" aria-pressed="false"><i style="--sw:var(--f-white-oak)"></i></button><button type="button" data-f="wenge" aria-label="Wenge" title="Wenge" aria-pressed="false"><i style="--sw:var(--f-wenge)"></i></button><button type="button" data-f="maple" aria-label="Maple" title="Maple" aria-pressed="false"><i style="--sw:var(--f-maple)"></i></button><span class="fname"></span></div>
+        <span class="tag">New</span>
+        <h3>Gazelle Rocker</h3>
+        <div class="dims">25.2 × 32.1 × 30.9 in <span>640 × 815 × 785 mm</span> <span>seat 16.4"</span></div>
+        <p>The lounge chair on laminated rockers, tied into the legs at Y-joints.</p>
+      </article><article class="card" data-slug="settee" data-default="baltic-birch">
+        <div class="img"><img src="img/w/settee/finish-baltic-birch.jpg" alt="Gazelle Settee in Baltic birch" width="1000" height="1250" loading="lazy"><img class="ln" src="img/w/settee/line.png" alt="" aria-hidden="true" width="1000" height="1250" loading="lazy"></div>
+        <div class="finishes" role="group" aria-label="Finish"><button type="button" data-f="baltic-birch" aria-label="Baltic birch" title="Baltic birch" aria-pressed="true"><i style="--sw:var(--f-baltic-birch)"></i></button><button type="button" data-f="walnut" aria-label="Walnut" title="Walnut" aria-pressed="false"><i style="--sw:var(--f-walnut)"></i></button><button type="button" data-f="white-oak" aria-label="White oak" title="White oak" aria-pressed="false"><i style="--sw:var(--f-white-oak)"></i></button><button type="button" data-f="wenge" aria-label="Wenge" title="Wenge" aria-pressed="false"><i style="--sw:var(--f-wenge)"></i></button><button type="button" data-f="maple" aria-label="Maple" title="Maple" aria-pressed="false"><i style="--sw:var(--f-maple)"></i></button><span class="fname"></span></div>
+        <span class="tag">New</span>
+        <h3>Gazelle Settee</h3>
+        <div class="dims">47.2 × 21.4 × 32.6 in <span>1200 × 545 × 830 mm</span> <span>seat 18.2"</span></div>
+        <p>Two seats between Gazelle side frames, with long seat and back panels.</p>
+      </article><article class="card" data-slug="bench" data-default="baltic-birch">
+        <div class="img"><img src="img/w/bench/finish-baltic-birch.jpg" alt="Gazelle Bench in Baltic birch" width="1000" height="1250" loading="lazy"><img class="ln" src="img/w/bench/line.png" alt="" aria-hidden="true" width="1000" height="1250" loading="lazy"></div>
+        <div class="finishes" role="group" aria-label="Finish"><button type="button" data-f="baltic-birch" aria-label="Baltic birch" title="Baltic birch" aria-pressed="true"><i style="--sw:var(--f-baltic-birch)"></i></button><button type="button" data-f="walnut" aria-label="Walnut" title="Walnut" aria-pressed="false"><i style="--sw:var(--f-walnut)"></i></button><button type="button" data-f="white-oak" aria-label="White oak" title="White oak" aria-pressed="false"><i style="--sw:var(--f-white-oak)"></i></button><button type="button" data-f="wenge" aria-label="Wenge" title="Wenge" aria-pressed="false"><i style="--sw:var(--f-wenge)"></i></button><button type="button" data-f="maple" aria-label="Maple" title="Maple" aria-pressed="false"><i style="--sw:var(--f-maple)"></i></button><span class="fname"></span></div>
+        <span class="tag">From the desk</span>
+        <h3>Gazelle Bench</h3>
+        <div class="dims">59.1 × 15.4 × 17.7 in <span>1500 × 390 × 450 mm</span></div>
+        <p>The production desk’s end frames at seat height, under a two-ply top that bears on rounded yokes.</p>
+      </article></div>
+<div class="family">Tables and desks</div><div class="grid three"><article class="card" data-slug="dining-table" data-default="walnut">
+        <div class="img"><img src="img/w/dining-table/finish-walnut.jpg" alt="Gazelle Dining Table in Walnut" width="1000" height="1250" loading="lazy"><img class="ln" src="img/w/dining-table/line.png" alt="" aria-hidden="true" width="1000" height="1250" loading="lazy"></div>
+        <div class="finishes" role="group" aria-label="Finish"><button type="button" data-f="baltic-birch" aria-label="Baltic birch" title="Baltic birch" aria-pressed="false"><i style="--sw:var(--f-baltic-birch)"></i></button><button type="button" data-f="walnut" aria-label="Walnut" title="Walnut" aria-pressed="true"><i style="--sw:var(--f-walnut)"></i></button><button type="button" data-f="white-oak" aria-label="White oak" title="White oak" aria-pressed="false"><i style="--sw:var(--f-white-oak)"></i></button><button type="button" data-f="wenge" aria-label="Wenge" title="Wenge" aria-pressed="false"><i style="--sw:var(--f-wenge)"></i></button><button type="button" data-f="maple" aria-label="Maple" title="Maple" aria-pressed="false"><i style="--sw:var(--f-maple)"></i></button><span class="fname"></span></div>
+        <span class="tag">Designed in Vectary</span>
+        <h3>Gazelle Dining Table</h3>
+        <div class="dims">118.1 × 41.3 × 29.5 in <span>3000 × 1050 × 750 mm</span></div>
+        <p>Seats ten. The top floats over a slim apron with a shadow gap; raked legs fork low into braces that rise to a raised center stretcher, so nothing low invites feet.</p>
+      </article><article class="card" data-slug="desk" data-default="baltic-birch">
+        <div class="img"><img src="img/w/desk/finish-baltic-birch.jpg" alt="Gazelle Desk in Baltic birch" width="1000" height="1250" loading="lazy"><img class="ln" src="img/w/desk/line.png" alt="" aria-hidden="true" width="1000" height="1250" loading="lazy"></div>
+        <div class="finishes" role="group" aria-label="Finish"><button type="button" data-f="baltic-birch" aria-label="Baltic birch" title="Baltic birch" aria-pressed="true"><i style="--sw:var(--f-baltic-birch)"></i></button><button type="button" data-f="walnut" aria-label="Walnut" title="Walnut" aria-pressed="false"><i style="--sw:var(--f-walnut)"></i></button><button type="button" data-f="white-oak" aria-label="White oak" title="White oak" aria-pressed="false"><i style="--sw:var(--f-white-oak)"></i></button><button type="button" data-f="wenge" aria-label="Wenge" title="Wenge" aria-pressed="false"><i style="--sw:var(--f-wenge)"></i></button><button type="button" data-f="maple" aria-label="Maple" title="Maple" aria-pressed="false"><i style="--sw:var(--f-maple)"></i></button><span class="fname"></span></div>
+        <span class="tag">Shop file</span>
+        <h3>Gazelle Desk</h3>
+        <div class="dims">45 × 22 × 30 in <span>1145 × 560 × 760 mm</span></div>
+        <p>The production desk. A two-ply top on rounded yokes, with a hanging drawer on stepped rails. 18 parts.</p>
+      </article><article class="card" data-slug="desk-36" data-default="baltic-birch">
+        <div class="img"><img src="img/w/desk-36/finish-baltic-birch.jpg" alt="Gazelle Desk, 36&quot; in Baltic birch" width="1000" height="1250" loading="lazy"><img class="ln" src="img/w/desk-36/line.png" alt="" aria-hidden="true" width="1000" height="1250" loading="lazy"></div>
+        <div class="finishes" role="group" aria-label="Finish"><button type="button" data-f="baltic-birch" aria-label="Baltic birch" title="Baltic birch" aria-pressed="true"><i style="--sw:var(--f-baltic-birch)"></i></button><button type="button" data-f="walnut" aria-label="Walnut" title="Walnut" aria-pressed="false"><i style="--sw:var(--f-walnut)"></i></button><button type="button" data-f="white-oak" aria-label="White oak" title="White oak" aria-pressed="false"><i style="--sw:var(--f-white-oak)"></i></button><button type="button" data-f="wenge" aria-label="Wenge" title="Wenge" aria-pressed="false"><i style="--sw:var(--f-wenge)"></i></button><button type="button" data-f="maple" aria-label="Maple" title="Maple" aria-pressed="false"><i style="--sw:var(--f-maple)"></i></button><span class="fname"></span></div>
+        <span class="tag">From the desk</span>
+        <h3>Gazelle Desk, 36&quot;</h3>
+        <div class="dims">36.2 × 22 × 30 in <span>920 × 560 × 760 mm</span></div>
+        <p>The production desk shortened to 36 inches, with the same frames, rails and drawer.</p>
+      </article></div>
+<div class="family">Storage and shelving</div><div class="grid three"><article class="card" data-slug="credenza" data-default="baltic-birch">
+        <div class="img"><img src="img/w/credenza/finish-baltic-birch.jpg" alt="Gazelle Credenza in Baltic birch" width="1000" height="1250" loading="lazy"><img class="ln" src="img/w/credenza/line.png" alt="" aria-hidden="true" width="1000" height="1250" loading="lazy"></div>
+        <div class="finishes" role="group" aria-label="Finish"><button type="button" data-f="baltic-birch" aria-label="Baltic birch" title="Baltic birch" aria-pressed="true"><i style="--sw:var(--f-baltic-birch)"></i></button><button type="button" data-f="walnut" aria-label="Walnut" title="Walnut" aria-pressed="false"><i style="--sw:var(--f-walnut)"></i></button><button type="button" data-f="white-oak" aria-label="White oak" title="White oak" aria-pressed="false"><i style="--sw:var(--f-white-oak)"></i></button><button type="button" data-f="wenge" aria-label="Wenge" title="Wenge" aria-pressed="false"><i style="--sw:var(--f-wenge)"></i></button><button type="button" data-f="maple" aria-label="Maple" title="Maple" aria-pressed="false"><i style="--sw:var(--f-maple)"></i></button><span class="fname"></span></div>
+        <span class="tag">From the desk</span>
+        <h3>Gazelle Credenza</h3>
+        <div class="dims">63 × 24 × 29.9 in <span>1600 × 610 × 760 mm</span></div>
+        <p>A two-ply case on the desk’s frames, with three rounded fronts.</p>
+      </article><article class="card" data-slug="wall-shelf" data-default="baltic-birch">
+        <div class="img"><img src="img/w/wall-shelf/finish-baltic-birch.jpg" alt="Gazelle Wall Shelf in Baltic birch" width="1000" height="1250" loading="lazy"><img class="ln" src="img/w/wall-shelf/line.png" alt="" aria-hidden="true" width="1000" height="1250" loading="lazy"></div>
+        <div class="finishes" role="group" aria-label="Finish"><button type="button" data-f="baltic-birch" aria-label="Baltic birch" title="Baltic birch" aria-pressed="true"><i style="--sw:var(--f-baltic-birch)"></i></button><button type="button" data-f="walnut" aria-label="Walnut" title="Walnut" aria-pressed="false"><i style="--sw:var(--f-walnut)"></i></button><button type="button" data-f="white-oak" aria-label="White oak" title="White oak" aria-pressed="false"><i style="--sw:var(--f-white-oak)"></i></button><button type="button" data-f="wenge" aria-label="Wenge" title="Wenge" aria-pressed="false"><i style="--sw:var(--f-wenge)"></i></button><button type="button" data-f="maple" aria-label="Maple" title="Maple" aria-pressed="false"><i style="--sw:var(--f-maple)"></i></button><span class="fname"></span></div>
+        <span class="tag">Shop file</span>
+        <h3>Gazelle Wall Shelf</h3>
+        <div class="dims">36 × 12 × 92.7 in <span>915 × 305 × 2355 mm</span></div>
+        <p>The production wall shelf, 62 parts. Laminated posts lock around the shelf arms at every cross node; uprights bend back to the wall.</p>
+      </article><article class="card" data-slug="cubby-shelf" data-default="baltic-birch">
+        <div class="img"><img src="img/w/cubby-shelf/finish-baltic-birch.jpg" alt="Gazelle Cubby Shelf in Baltic birch" width="1000" height="1250" loading="lazy"><img class="ln" src="img/w/cubby-shelf/line.png" alt="" aria-hidden="true" width="1000" height="1250" loading="lazy"></div>
+        <div class="finishes" role="group" aria-label="Finish"><button type="button" data-f="baltic-birch" aria-label="Baltic birch" title="Baltic birch" aria-pressed="true"><i style="--sw:var(--f-baltic-birch)"></i></button><button type="button" data-f="walnut" aria-label="Walnut" title="Walnut" aria-pressed="false"><i style="--sw:var(--f-walnut)"></i></button><button type="button" data-f="white-oak" aria-label="White oak" title="White oak" aria-pressed="false"><i style="--sw:var(--f-white-oak)"></i></button><button type="button" data-f="wenge" aria-label="Wenge" title="Wenge" aria-pressed="false"><i style="--sw:var(--f-wenge)"></i></button><button type="button" data-f="maple" aria-label="Maple" title="Maple" aria-pressed="false"><i style="--sw:var(--f-maple)"></i></button><span class="fname"></span></div>
+        <span class="tag">Wall Shelf system</span>
+        <h3>Gazelle Cubby Shelf</h3>
+        <div class="dims">36 × 12 × 92.7 in <span>915 × 305 × 2355 mm</span></div>
+        <p>The wall shelf with an open cubby between rounded panels.</p>
+      </article><article class="card" data-slug="tower" data-default="baltic-birch">
+        <div class="img"><img src="img/w/tower/finish-baltic-birch.jpg" alt="Gazelle Tower in Baltic birch" width="1000" height="1250" loading="lazy"><img class="ln" src="img/w/tower/line.png" alt="" aria-hidden="true" width="1000" height="1250" loading="lazy"></div>
+        <div class="finishes" role="group" aria-label="Finish"><button type="button" data-f="baltic-birch" aria-label="Baltic birch" title="Baltic birch" aria-pressed="true"><i style="--sw:var(--f-baltic-birch)"></i></button><button type="button" data-f="walnut" aria-label="Walnut" title="Walnut" aria-pressed="false"><i style="--sw:var(--f-walnut)"></i></button><button type="button" data-f="white-oak" aria-label="White oak" title="White oak" aria-pressed="false"><i style="--sw:var(--f-white-oak)"></i></button><button type="button" data-f="wenge" aria-label="Wenge" title="Wenge" aria-pressed="false"><i style="--sw:var(--f-wenge)"></i></button><button type="button" data-f="maple" aria-label="Maple" title="Maple" aria-pressed="false"><i style="--sw:var(--f-maple)"></i></button><span class="fname"></span></div>
+        <span class="tag">Wall Shelf system</span>
+        <h3>Gazelle Tower</h3>
+        <div class="dims">30.7 × 21.2 × 75.9 in <span>780 × 540 × 1930 mm</span></div>
+        <p>Shelves over a two-drawer cabinet, on the same laminated posts.</p>
+      </article><article class="card" data-slug="work-wall" data-default="baltic-birch">
+        <div class="img"><img src="img/w/work-wall/finish-baltic-birch.jpg" alt="Gazelle Work Wall in Baltic birch" width="1000" height="1250" loading="lazy"><img class="ln" src="img/w/work-wall/line.png" alt="" aria-hidden="true" width="1000" height="1250" loading="lazy"></div>
+        <div class="finishes" role="group" aria-label="Finish"><button type="button" data-f="baltic-birch" aria-label="Baltic birch" title="Baltic birch" aria-pressed="true"><i style="--sw:var(--f-baltic-birch)"></i></button><button type="button" data-f="walnut" aria-label="Walnut" title="Walnut" aria-pressed="false"><i style="--sw:var(--f-walnut)"></i></button><button type="button" data-f="white-oak" aria-label="White oak" title="White oak" aria-pressed="false"><i style="--sw:var(--f-white-oak)"></i></button><button type="button" data-f="wenge" aria-label="Wenge" title="Wenge" aria-pressed="false"><i style="--sw:var(--f-wenge)"></i></button><button type="button" data-f="maple" aria-label="Maple" title="Maple" aria-pressed="false"><i style="--sw:var(--f-maple)"></i></button><span class="fname"></span></div>
+        <span class="tag">Wall Shelf system</span>
+        <h3>Gazelle Work Wall</h3>
+        <div class="dims">71.5 × 26.7 × 92.8 in <span>1815 × 680 × 2355 mm</span></div>
+        <p>A desk surface, shelves and a deep top shelf between laminated posts.</p>
+      </article></div>
+
+  </section>
+
+  <section class="block" id="armchair"><div class="head"><h2>The Gazelle Armchair</h2><p>The piece the collection grew from, rendered from its shop file part by part.</p></div><div class="spread"><figure><img src="img/w/armchair/hero.jpg" alt="Gazelle Armchair, front three-quarter" width="1000" height="1250" loading="lazy"><figcaption>Front three-quarter</figcaption></figure><figure><img src="img/w/armchair/side.jpg" alt="Gazelle Armchair, side" width="1000" height="1250" loading="lazy"><figcaption>Side</figcaption></figure><figure><img src="img/w/armchair/back.jpg" alt="Gazelle Armchair, rear three-quarter" width="1000" height="1250" loading="lazy"><figcaption>Rear three-quarter</figcaption></figure><figure><img src="img/w/armchair/detail-1.jpg" alt="Gazelle Armchair, y-junction and brass" width="1000" height="1250" loading="lazy"><figcaption>Y-junction and brass</figcaption></figure><figure><img src="img/w/armchair/detail-2.jpg" alt="Gazelle Armchair, back rail and arm" width="1000" height="1250" loading="lazy"><figcaption>Back rail and arm</figcaption></figure></div><div class="spread two"><figure class="wide"><img src="img/w/armchair/exploded.jpg" alt="Gazelle Armchair exploded into its 51 shop-file parts" width="1400" height="1750" loading="lazy"><figcaption>Exploded from the 51 parts in Titobi’s shop file, brass pulled out on its own axes.</figcaption></figure><figure class="wide"><img src="img/w/armchair/exploded-line.png" alt="Exploded line drawing of the Gazelle Armchair" width="1000" height="1250" loading="lazy"><figcaption>The same breakdown as a line drawing.</figcaption></figure></div></section>
+
+  <section class="block" id="drawings">
+    <div class="head"><h2>Drawings</h2><p>Line drawings come straight from the models, in the style of Titobi’s own typology drawings: outlines and part breaks, no shading.</p></div>
+    <figure class="lineup"><img src="img/w/_site/lineup.png" alt="All pieces in front elevation at one scale" width="3000" height="450" loading="lazy"><figcaption>All 17 pieces at one scale.</figcaption></figure>
+    <div class="typ"><figure><img src="img/w/_site/typology-tables.png" alt="Tables line drawing" width="700" height="875" loading="lazy"><figcaption>Tables</figcaption></figure><figure><img src="img/w/_site/typology-seating.png" alt="Seating line drawing" width="700" height="875" loading="lazy"><figcaption>Seating</figcaption></figure><figure><img src="img/w/_site/typology-home.png" alt="Home line drawing" width="700" height="875" loading="lazy"><figcaption>Home</figcaption></figure></div>
+    <div class="dimsrow"><figure><img src="img/w/armchair/dims.png" alt="Dimension drawing of the Gazelle Armchair" width="600" height="900" loading="lazy"><figcaption>Armchair</figcaption></figure><figure><img src="img/w/desk/dims.png" alt="Dimension drawing of the Gazelle Desk" width="600" height="900" loading="lazy"><figcaption>Desk</figcaption></figure><figure><img src="img/w/wall-shelf/dims.png" alt="Dimension drawing of the Gazelle Wall Shelf" width="600" height="900" loading="lazy"><figcaption>Wall Shelf</figcaption></figure></div>
+  </section>
+
+  <section class="block" id="exploded"><div class="head"><h2>Exploded</h2><p>Every piece pulled apart along its assembly axes.</p></div><div class="exl"><figure><img src="img/w/armchair/exploded-line.png" alt="Exploded drawing of the Gazelle Armchair" width="1000" height="1250" loading="lazy"><figcaption>Armchair</figcaption></figure><figure><img src="img/w/side-chair/exploded-line.png" alt="Exploded drawing of the Gazelle Side Chair" width="1000" height="1250" loading="lazy"><figcaption>Side Chair</figcaption></figure><figure><img src="img/w/bullhorn-chair/exploded-line.png" alt="Exploded drawing of the Gazelle Bullhorn Chair" width="1000" height="1250" loading="lazy"><figcaption>Bullhorn Chair</figcaption></figure><figure><img src="img/w/stool-with-back/exploded-line.png" alt="Exploded drawing of the Gazelle Stool with Back" width="1000" height="1250" loading="lazy"><figcaption>Stool with Back</figcaption></figure><figure><img src="img/w/stool/exploded-line.png" alt="Exploded drawing of the Gazelle Stool" width="1000" height="1250" loading="lazy"><figcaption>Stool</figcaption></figure><figure><img src="img/w/lounge-chair/exploded-line.png" alt="Exploded drawing of the Gazelle Lounge Chair" width="1000" height="1250" loading="lazy"><figcaption>Lounge Chair</figcaption></figure><figure><img src="img/w/rocker/exploded-line.png" alt="Exploded drawing of the Gazelle Rocker" width="1000" height="1250" loading="lazy"><figcaption>Rocker</figcaption></figure><figure><img src="img/w/settee/exploded-line.png" alt="Exploded drawing of the Gazelle Settee" width="1000" height="1250" loading="lazy"><figcaption>Settee</figcaption></figure><figure><img src="img/w/bench/exploded-line.png" alt="Exploded drawing of the Gazelle Bench" width="1000" height="1250" loading="lazy"><figcaption>Bench</figcaption></figure><figure><img src="img/w/dining-table/exploded-line.png" alt="Exploded drawing of the Gazelle Dining Table" width="1000" height="1250" loading="lazy"><figcaption>Dining Table</figcaption></figure><figure><img src="img/w/desk/exploded-line.png" alt="Exploded drawing of the Gazelle Desk" width="1000" height="1250" loading="lazy"><figcaption>Desk</figcaption></figure><figure><img src="img/w/desk-36/exploded-line.png" alt="Exploded drawing of the Gazelle Desk, 36&quot;" width="1000" height="1250" loading="lazy"><figcaption>Desk, 36&quot;</figcaption></figure><figure><img src="img/w/credenza/exploded-line.png" alt="Exploded drawing of the Gazelle Credenza" width="1000" height="1250" loading="lazy"><figcaption>Credenza</figcaption></figure><figure><img src="img/w/wall-shelf/exploded-line.png" alt="Exploded drawing of the Gazelle Wall Shelf" width="1000" height="1250" loading="lazy"><figcaption>Wall Shelf</figcaption></figure><figure><img src="img/w/cubby-shelf/exploded-line.png" alt="Exploded drawing of the Gazelle Cubby Shelf" width="1000" height="1250" loading="lazy"><figcaption>Cubby Shelf</figcaption></figure><figure><img src="img/w/tower/exploded-line.png" alt="Exploded drawing of the Gazelle Tower" width="1000" height="1250" loading="lazy"><figcaption>Tower</figcaption></figure><figure><img src="img/w/work-wall/exploded-line.png" alt="Exploded drawing of the Gazelle Work Wall" width="1000" height="1250" loading="lazy"><figcaption>Work Wall</figcaption></figure></div></section>
+
+  <section class="block" id="rooms"><div class="head"><h2>In rooms</h2><p>Rendered in Vectary from the final models: the furniture is the exact 3D render, and Vectary made the room, light and styling around it.</p></div><div class="rooms"><figure><img src="img/w/_site/hero-1a.jpg" alt="Armchair and stools in late sun." width="1400" height="1400" loading="lazy"><figcaption>Armchair and stools in late sun.</figcaption></figure><figure><img src="img/w/_site/scene-work.jpg" alt="Wall Shelf, Desk and Armchair." width="2000" height="1125" loading="lazy"><figcaption>Wall Shelf, Desk and Armchair.</figcaption></figure><figure><img src="img/w/_site/scene-living.jpg" alt="Settee, Lounge Chair and Rocker." width="2000" height="1125" loading="lazy"><figcaption>Settee, Lounge Chair and Rocker.</figcaption></figure><figure><img src="img/w/_site/scene-entry.jpg" alt="Bench and Cubby Shelf." width="2000" height="1125" loading="lazy"><figcaption>Bench and Cubby Shelf.</figcaption></figure></div></section>
+
+  <section class="block" id="new"><div class="head"><h2>New directions</h2><p>Four seating concepts came out of Vectary in Titobi’s language. Three were then built for real from the shop-file armchair’s parts; the fourth, a counter stool, is already the Stool with Back.</p></div><div class="newd"><figure class="concept"><img src="img/w/_site/iterations.jpg" alt="Vectary concept sheet: lounge chair, rocker, settee and counter stool" width="1200" height="1600" loading="lazy"><figcaption>The Vectary concept sheet.</figcaption></figure><div class="built"><figure><img src="img/w/lounge-chair/hero.jpg" alt="Gazelle Lounge Chair" width="1000" height="1250" loading="lazy"><figcaption>Lounge Chair</figcaption></figure><figure><img src="img/w/rocker/hero.jpg" alt="Gazelle Rocker" width="1000" height="1250" loading="lazy"><figcaption>Rocker</figcaption></figure><figure><img src="img/w/settee/hero.jpg" alt="Gazelle Settee" width="1000" height="1250" loading="lazy"><figcaption>Settee</figcaption></figure></div></div></section>
+
+  <section class="block" id="materials">
+    <div class="head"><h2>Materials</h2><p>Baltic birch shows its plies on every edge. Walnut, white oak, wenge and maple read as solid wood with the grain running along each member. The textures were made in Vectary.</p></div>
+    <figure class="ply"><img src="img/w/_site/ply-section.png" alt="Edge section: two 18 mm plies glued to 36 mm, 5/8 inch roundover on each" width="1400" height="875" loading="lazy"></figure>
+    <div class="mat"><figure><img src="img/w/tex/birch-face.jpg" alt="Baltic birch texture" width="600" height="600" loading="lazy"><figcaption><b>Baltic birch</b>Face veneer, from a shelf top.</figcaption></figure><figure><img src="img/w/tex/ply-edge.jpg" alt="Ply edge texture" width="600" height="600" loading="lazy"><figcaption><b>Ply edge</b>The laminated edge, from a shelf edge.</figcaption></figure><figure><img src="img/w/tex/walnut.jpg" alt="Walnut texture" width="600" height="600" loading="lazy"><figcaption><b>Walnut</b></figcaption></figure><figure><img src="img/w/tex/white-oak.jpg" alt="White oak texture" width="600" height="600" loading="lazy"><figcaption><b>White oak</b></figcaption></figure><figure><img src="img/w/tex/wenge.jpg" alt="Wenge texture" width="600" height="600" loading="lazy"><figcaption><b>Wenge</b></figcaption></figure><figure><img src="img/w/tex/maple.jpg" alt="Maple texture" width="600" height="600" loading="lazy"><figcaption><b>Maple</b></figcaption></figure></div>
+    <dl class="spec">
+      <div><dt>Sheet</dt><dd>18 mm Baltic birch</dd></div>
+      <div><dt>Laminated members</dt><dd>36 mm (2 plies)</dd></div>
+      <div><dt>Roundover</dt><dd>5/8" per ply</dd></div>
+      <div><dt>Finishes</dt><dd>Birch + 4 hardwoods</dd></div>
+    </dl>
+  </section>
+
+  <section class="block" id="files">
+    <div class="head"><h2>Files</h2><p>Everything lives in <code>Gazelle Collection</code> on the Desktop.</p></div>
+    <div class="files">
+      <ul>
+        <li><b>Web image set</b><code>web/images/&lt;piece&gt;/</code><span>Hero, front, side, rear, details, five finishes, line and exploded drawings, dimensions.</span></li>
+        <li><b>3D models</b><code>models/gazelle-*.glb</code><span>Every piece with switchable finishes (glTF material variants).</span></li>
+        <li><b>Vectary</b><span>Studio project with the whole collection; canvases for materials, concepts and the room scenes.</span></li>
+      </ul>
+      <ul>
+        <li><b>Blender scene</b><code>gazelle-collection.blend</code><span>The working scene, with the shop-file parts.</span></li>
+        <li><b>Room scenes</b><code>vectary/scenes/</code><span>Every scene’s passes, prompts and cameras, so any of them can be rebuilt.</span></li>
+        <li><b>Shop files</b><code>Titobi_Gazelle_*.stp</code><span>The source for seven pieces and every derived one.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <footer><span>The Gazelle Collection by Titobi</span><span>Series prototype, October 2026</span></footer>
+</div>
+<script>(() => {
+  const NAMES = { 'baltic-birch': 'Baltic birch', walnut: 'Walnut', 'white-oak': 'White oak', wenge: 'Wenge', maple: 'Maple' };
+  const cards = [...document.querySelectorAll('.card[data-slug]')];
+  function mark(group, f) {
+    if (!group) return;
+    group.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.f === f)));
+    const n = group.querySelector('.fname'); if (n) n.textContent = NAMES[f] || '';
+  }
+  function setFinish(card, f) {
+    const group = card.querySelector('.finishes');
+    if (!group || !group.querySelector(`[data-f="${f}"]`)) return;
+    const img = card.querySelector('.img img:not(.ln)');
+    const src = `img/w/${card.dataset.slug}/finish-${f}.jpg`;
+    mark(group, f);
+    if (img.getAttribute('src') === src) return;
+    img.classList.add('swap');
+    const pre = new Image();
+    pre.onload = () => { img.src = src; img.alt = img.alt.replace(/ in [A-Z][a-z]+( [a-z]+)?$/, '') + ' in ' + NAMES[f]; img.classList.remove('swap'); };
+    pre.onerror = () => img.classList.remove('swap');
+    pre.src = src;
+  }
+  cards.forEach(card => {
+    const g = card.querySelector('.finishes');
+    mark(g, card.dataset.default);
+    if (g) g.addEventListener('click', ev => { const b = ev.target.closest('button'); if (b) setFinish(card, b.dataset.f); });
+  });
+  const all = document.querySelector('[data-all]');
+  if (all) all.addEventListener('click', ev => { const b = ev.target.closest('button'); if (!b) return; mark(all, b.dataset.f); cards.forEach(c => setFinish(c, b.dataset.f)); });
+})();
+</script>
+
+</body>
+</html>
