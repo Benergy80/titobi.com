@@ -161,7 +161,7 @@ function footerHtml() {
   return `<footer class="site-footer">
     <div class="site-footer__grid">
       <p>Titobi means BIG.<br>©${year} Titobi Studio, LLC<br>Chicago, Illinois</p>
-      <p><a href="collection.html">Shop</a><br><a href="${S.media.lookbook ? "lookbook/index.html" : "page.html?p=lookbook"}">Lookbook</a><br><a href="page.html?p=downloads">Downloads</a><br><a href="page.html?p=info">Info + FAQs</a></p>
+      <p><a href="collection.html">Shop</a><br><a href="${S.media.lookbook ? "lookbook/index.html" : "page.html?p=lookbook"}">Lookbook</a><br><a href="page.html?p=info">Info + FAQs</a></p>
       <p><a href="page.html?p=about">About Us</a><br><a href="page.html?p=contact">Contact</a><br><a href="https://www.instagram.com/titobistudio" rel="noopener">Instagram</a></p>
       <form class="signup" id="signup" novalidate>
         <p>Sign up for our newsletter, Informal.</p>
@@ -358,11 +358,6 @@ function renderProduct(main) {
   const gallery = photos + drawings || `<div class="gallery__item is-placeholder"><img src="${typologyImage(p.collection)}" alt=""></div>`;
   const viewer = model ? `<div class="gallery__item"><model-viewer src="${modelSrc(p, finish)}" camera-controls tone-mapping="agx" shadow-intensity="0.4" exposure="1.1" alt="3D model of the ${esc(p.name)}" loading="lazy"></model-viewer></div>` : "";
   const dims = productFile(p, "dims");
-  const downloads = [
-    model && `<a class="u" href="${model}" download>3D model (GLB)</a>`,
-    productFile(p, "line") && `<a class="u" href="${productFile(p, "line")}" download>Line drawing</a>`,
-    productFile(p, "exploded-line") && `<a class="u" href="${productFile(p, "exploded-line")}" download>Exploded drawing</a>`,
-  ].filter(Boolean);
 
   main.innerHTML = `
     <div class="product">
@@ -383,7 +378,6 @@ function renderProduct(main) {
             ${dims ? `<img src="${dims}" alt="Dimension drawing of the ${esc(p.name)}">` : ""}
           </div></details>
           <details><summary>Materials + finishes</summary><div class="acc-body"><p>${esc(p.materials)}</p>${p.construction ? `<p>${esc(p.construction)}</p>` : ""}${sectionFigure()}</div></details>
-          <details><summary>Downloads</summary><div class="acc-body">${downloads.length ? `<p>${downloads.join("<br>")}</p>` : "<p>Drawings and 3D files are on the way.</p>"}</div></details>
           <details><summary>Lead time, shipping, customization</summary><div class="acc-body"><p>Each piece is made to order in Chicago. Lead times, shipping and custom species or sizes will be listed here before the store opens. For now, write to us through the <a class="u" href="page.html?p=contact">contact page</a>.</p></div></details>
         </div>
       </div></div></div>
@@ -427,13 +421,6 @@ const PAGES = {
     <h2>Materials</h2><p>${esc(products()[0]?.materials || "")}</p>${sectionFigure()}
     <h2>Finishes</h2><p>${Object.values(S.catalog.finishes).map(esc).join(", ")}.</p>
     <h2>Lead time, shipping, returns</h2><p>Details will be posted before the store opens.</p>`,
-  downloads: () => {
-    const rows = products().filter((p) => modelSrc(p) || productFile(p, "line"));
-    return `<h1 class="display">Downloads</h1>
-      ${rows.length ? `<ul class="rows">${rows.map((p) => `<li><a href="product.html?p=${p.slug}">${esc(p.name)}</a><span>${[
-        modelSrc(p) && `<a href="${modelSrc(p)}" download>GLB</a>`, productFile(p, "line") && `<a href="${productFile(p, "line")}" download>Drawing</a>`,
-      ].filter(Boolean).join(" · ")}</span></li>`).join("")}</ul>` : "<p>Drawings and 3D files for the Gazelle Collection are on the way.</p>"}`;
-  },
   lookbook: () => `<h1 class="display">Lookbook</h1>
     <p>${S.media.lookbook ? `<a href="lookbook/index.html">${esc(S.site.lookbook.title)}</a>` : "The Gazelle Collection lookbook is being finished and will be posted here."}</p>`,
 };

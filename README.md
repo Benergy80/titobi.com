@@ -35,9 +35,10 @@ Pages show a light grey tile with the typology line drawing wherever an image is
 - `product.html?p=<slug>&finish=<finish>`:
   - left: sticky info and accordions
   - right: stacked gallery (hero, front, back, rear, side, details), then the 3D viewer
-- `page.html?p=about|contact|info|downloads|lookbook`
+- `page.html?p=about|contact|info|lookbook`
 
-The DWR deck is not on the site (Ben, Oct 13 2026).
+The DWR deck is not on the site (Ben, Oct 13 2026). No downloads anywhere on the site: no file links,
+no Downloads page or accordion (Ben, Oct 14 2026). The 3D viewer and the drawings shown on pages stay.
 
 ## Checkout
 
