@@ -190,9 +190,13 @@ def copy_image(src: Path, dst: Path) -> None:
         shutil.copy2(src, dst)
 
 
-def copy_tree(src: Path, dst: Path) -> bool:
+def copy_tree(src: Path, dst: Path, released_at: float | None = None) -> bool:
+    """Replace dst with src. When any file in src was rewritten after its release line (an export in progress),
+    keep the whole existing copy instead of mixing two exports."""
     if not (src / "index.html").exists():
         return False
+    if dst.exists() and any(f.is_file() and unreleased(f, released_at) for f in src.rglob("*")):
+        return True
     if dst.exists():
         shutil.rmtree(dst)
     shutil.copytree(src, dst)
@@ -283,7 +287,8 @@ def main() -> int:
             manifest["models"].append(slug)
 
     if posted(lines, "lookbook final"):
-        manifest["lookbook"] = copy_tree(GAZELLE / "web" / "lookbook", SITE / "lookbook")
+        lb_times = [t for line, t in zip(lines, times) if t is not None and re.match(STAMP + r"(?:[A-Z]: )?lookbook final", line)]
+        manifest["lookbook"] = copy_tree(GAZELLE / "web" / "lookbook", SITE / "lookbook", max(lb_times, default=None))
 
     (SITE / "data" / "media.json").write_text(json.dumps(manifest, indent=1) + "\n")
     print(f"products {len(manifest['products'])}, site files {len(manifest['site'])}, models {len(manifest['models'])}, "
