@@ -1,0 +1,209 @@
+{
+ "products": {
+  "armchair": [
+   "back.jpg",
+   "dims.png",
+   "dims.svg",
+   "exploded-line.png",
+   "exploded-line.svg",
+   "finish-baltic-birch.jpg",
+   "finish-maple.jpg",
+   "front.jpg",
+   "hero.jpg",
+   "line.png",
+   "line.svg",
+   "rear.jpg",
+   "side.jpg"
+  ],
+  "bench": [
+   "dims.png",
+   "dims.svg",
+   "exploded-line.png",
+   "exploded-line.svg",
+   "line.png",
+   "line.svg"
+  ],
+  "bullhorn-chair": [
+   "back.jpg",
+   "dims.png",
+   "dims.svg",
+   "exploded-line.png",
+   "exploded-line.svg",
+   "front.jpg",
+   "hero.jpg",
+   "line.png",
+   "line.svg",
+   "rear.jpg",
+   "side.jpg"
+  ],
+  "credenza": [
+   "dims.png",
+   "dims.svg",
+   "exploded-line.png",
+   "exploded-line.svg",
+   "line.png",
+   "line.svg"
+  ],
+  "cubby-shelf": [
+   "dims.png",
+   "dims.svg",
+   "exploded-line.png",
+   "exploded-line.svg",
+   "line.png",
+   "line.svg"
+  ],
+  "desk": [
+   "back.jpg",
+   "dims.png",
+   "dims.svg",
+   "exploded-line.png",
+   "exploded-line.svg",
+   "front.jpg",
+   "hero.jpg",
+   "line.png",
+   "line.svg",
+   "side.jpg"
+  ],
+  "desk-36": [
+   "back.jpg",
+   "dims.png",
+   "dims.svg",
+   "exploded-line.png",
+   "exploded-line.svg",
+   "front.jpg",
+   "hero.jpg",
+   "line.png",
+   "line.svg",
+   "side.jpg"
+  ],
+  "dining-table": [
+   "dims.png",
+   "dims.svg",
+   "exploded-line.png",
+   "exploded-line.svg",
+   "line.png",
+   "line.svg",
+   "set-line.png",
+   "set-line.svg"
+  ],
+  "lounge-chair": [
+   "dims.png",
+   "dims.svg",
+   "exploded-line.png",
+   "exploded-line.svg",
+   "line.png",
+   "line.svg"
+  ],
+  "rocker": [
+   "dims.png",
+   "dims.svg",
+   "exploded-line.png",
+   "exploded-line.svg",
+   "line.png",
+   "line.svg"
+  ],
+  "settee": [
+   "dims.png",
+   "dims.svg",
+   "exploded-line.png",
+   "exploded-line.svg",
+   "line.png",
+   "line.svg"
+  ],
+  "side-chair": [
+   "back.jpg",
+   "dims.png",
+   "dims.svg",
+   "exploded-line.png",
+   "exploded-line.svg",
+   "front.jpg",
+   "hero.jpg",
+   "line.png",
+   "line.svg",
+   "rear.jpg",
+   "side.jpg"
+  ],
+  "stool": [
+   "detail-1.jpg",
+   "dims.png",
+   "dims.svg",
+   "exploded-line.png",
+   "exploded-line.svg",
+   "front.jpg",
+   "line.png",
+   "line.svg",
+   "rear.jpg"
+  ],
+  "stool-with-back": [
+   "detail-1.jpg",
+   "dims.png",
+   "dims.svg",
+   "exploded-line.png",
+   "exploded-line.svg",
+   "front.jpg",
+   "line.png",
+   "line.svg",
+   "rear.jpg"
+  ],
+  "tower": [
+   "dims.png",
+   "dims.svg",
+   "exploded-line.png",
+   "exploded-line.svg",
+   "line.png",
+   "line.svg"
+  ],
+  "wall-shelf": [
+   "dims.png",
+   "dims.svg",
+   "exploded-line.png",
+   "exploded-line.svg",
+   "line.png",
+   "line.svg"
+  ],
+  "work-wall": [
+   "dims.png",
+   "dims.svg",
+   "exploded-line.png",
+   "exploded-line.svg",
+   "line.png",
+   "line.svg"
+  ]
+ },
+ "site": [
+  "hero-1a.jpg",
+  "lineup.json",
+  "lineup.png",
+  "lineup.svg",
+  "logo.png",
+  "logo.svg",
+  "ply-section.png",
+  "ply-section.svg",
+  "scene-work.jpg",
+  "typology-seating.png",
+  "typology-seating.svg",
+  "typology-tables.png",
+  "typology-tables.svg"
+ ],
+ "models": [
+  "armchair",
+  "bench",
+  "bullhorn-chair",
+  "credenza",
+  "cubby-shelf",
+  "desk-36",
+  "desk",
+  "dining-set",
+  "dining-table",
+  "lounge-chair",
+  "rocker",
+  "settee",
+  "side-chair",
+  "stool-with-back",
+  "stool",
+  "tower",
+  "wall-shelf",
+  "work-wall"
+ ],
+ "lookbook": false
+}

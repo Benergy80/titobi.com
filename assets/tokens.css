@@ -1,0 +1,37 @@
+/* Design tokens for the Titobi Studio site. */
+
+:root {
+  /* Type: Instrument Sans throughout */
+  --font: "Instrument Sans", system-ui, sans-serif;
+  --size-body: 14px;
+  --lh-body: 1.4;
+  --size-small: 12px;
+  --size-display: clamp(2rem, 2.8vw, 3rem);   /* 48px statement + titles */
+  --lh-display: 1.1;
+
+  /* Layout */
+  --gutter: clamp(16px, 2.34vw, 48px);        /* 40px at 1712 */
+  --gap: clamp(12px, 1.4vw, 28px);            /* 24px grid gap at 1712 */
+  --gap-tight: clamp(8px, 0.8vw, 16px);       /* shop grid */
+  --hero-h: 80svh;
+  --section-pad: 48px;
+  --info-w: 22rem;                            /* product info column */
+
+  /* Color */
+  --bg: #ffffff;
+  --fg: #000000;
+  --muted: rgb(0 0 0 / 0.55);
+  --line: #e6e6e6;
+  --tile: #ffffff;                            /* product tile; renders are on pure white (Ben) */
+  --placeholder: #f2f2f2;
+  --footer-bg: #f7f7f7;
+
+  --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+
+  /* Finish swatches (same values as the Gazelle lookbook) */
+  --f-baltic-birch: #e6cfa6;
+  --f-walnut: #5e3b28;
+  --f-white-oak: #c49a63;
+  --f-wenge: #2e221c;
+  --f-maple: #efdcbc;
+}

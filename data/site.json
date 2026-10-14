@@ -1,0 +1,62 @@
+{
+ "shop": {
+  "name": "Titobi Studio",
+  "domain": "heddnt-d1.myshopify.com",
+  "currency": "USD"
+ },
+ "collections": [
+  {
+   "handle": "tables",
+   "title": "Tables",
+   "image": "media/store/typology-tables.png"
+  },
+  {
+   "handle": "seating",
+   "title": "Seating",
+   "image": "media/store/typology-seating.png"
+  },
+  {
+   "handle": "lighting",
+   "title": "Lighting",
+   "image": "media/store/typology-lighting.png"
+  },
+  {
+   "handle": "home",
+   "title": "Home",
+   "image": "media/store/typology-home.png"
+  }
+ ],
+ "home": {
+  "hero": {
+   "media": [
+    "media/photos/armchair-studio.jpg",
+    "media/photos/edge-detail.jpg"
+   ],
+   "line": "There’s a cohesive interest in work that prioritizes narrative and storytelling… not necessarily scientific ergonomics.",
+   "name": "Gazelle Collection",
+   "link": "collection.html"
+  },
+  "statement": {
+   "text": "Titobi means BIG.",
+   "link_label": "About Us",
+   "link": "page.html?p=about"
+  },
+  "hero2": {
+   "media": [
+    "media/photos/desk-studio.jpg",
+    "media/photos/wall-shelf-window.jpg"
+   ],
+   "line": "Laminated in pairs, striped on every edge.",
+   "name": "Gazelle Wall Shelf",
+   "link": "product.html?p=wall-shelf",
+   "when_final": {
+    "name": "Gazelle Armchair",
+    "link": "product.html?p=armchair"
+   }
+  }
+ },
+ "lookbook": {
+  "title": "Gazelle Collection Lookbook",
+  "path": "lookbook/index.html"
+ }
+}

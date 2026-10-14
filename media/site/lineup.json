@@ -1,0 +1,129 @@
+{
+ "width": 6000,
+ "height": 900,
+ "floor_y_px": 810.0,
+ "px_per_m": 270.959,
+ "px_per_inch": 6.882,
+ "order": "tables, seating, home",
+ "pieces": [
+  {
+   "slug": "desk",
+   "collection": "tables",
+   "x_centre_px": 224.9,
+   "width_px": 309.7,
+   "height_px": 206.5
+  },
+  {
+   "slug": "desk-36",
+   "collection": "tables",
+   "x_centre_px": 574.3,
+   "width_px": 249.3,
+   "height_px": 206.5
+  },
+  {
+   "slug": "dining-table",
+   "collection": "tables",
+   "x_centre_px": 1175.4,
+   "width_px": 812.9,
+   "height_px": 203.2
+  },
+  {
+   "slug": "armchair",
+   "collection": "seating",
+   "x_centre_px": 1730.4,
+   "width_px": 157.2,
+   "height_px": 213.5
+  },
+  {
+   "slug": "side-chair",
+   "collection": "seating",
+   "x_centre_px": 1957.6,
+   "width_px": 157.2,
+   "height_px": 213.6
+  },
+  {
+   "slug": "bullhorn-chair",
+   "collection": "seating",
+   "x_centre_px": 2184.8,
+   "width_px": 157.2,
+   "height_px": 213.6
+  },
+  {
+   "slug": "stool-with-back",
+   "collection": "seating",
+   "x_centre_px": 2379.7,
+   "width_px": 92.8,
+   "height_px": 271.4
+  },
+  {
+   "slug": "stool",
+   "collection": "seating",
+   "x_centre_px": 2542.5,
+   "width_px": 92.8,
+   "height_px": 227.2
+  },
+  {
+   "slug": "bench",
+   "collection": "seating",
+   "x_centre_px": 2862.2,
+   "width_px": 406.4,
+   "height_px": 122.1
+  },
+  {
+   "slug": "lounge-chair",
+   "collection": "seating",
+   "x_centre_px": 3222.1,
+   "width_px": 173.4,
+   "height_px": 206.0
+  },
+  {
+   "slug": "rocker",
+   "collection": "seating",
+   "x_centre_px": 3465.5,
+   "width_px": 173.4,
+   "height_px": 212.8
+  },
+  {
+   "slug": "settee",
+   "collection": "seating",
+   "x_centre_px": 3784.8,
+   "width_px": 325.2,
+   "height_px": 224.2
+  },
+  {
+   "slug": "credenza",
+   "collection": "home",
+   "x_centre_px": 4234.1,
+   "width_px": 433.5,
+   "height_px": 206.1
+  },
+  {
+   "slug": "wall-shelf",
+   "collection": "home",
+   "x_centre_px": 4644.8,
+   "width_px": 247.8,
+   "height_px": 638.2
+  },
+  {
+   "slug": "cubby-shelf",
+   "collection": "home",
+   "x_centre_px": 4962.5,
+   "width_px": 247.8,
+   "height_px": 638.2
+  },
+  {
+   "slug": "tower",
+   "collection": "home",
+   "x_centre_px": 5262.1,
+   "width_px": 211.4,
+   "height_px": 522.2
+  },
+  {
+   "slug": "work-wall",
+   "collection": "home",
+   "x_centre_px": 5683.9,
+   "width_px": 492.2,
+   "height_px": 639.0
+  }
+ ]
+}
