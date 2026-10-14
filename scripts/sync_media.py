@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Copy finished Gazelle media into the site, but only what STATUS.md says is final.
 
-The Gazelle/Vectary Claude session writes to ~/Desktop/Gazelle Collection/ and posts lines to its
+The Gazelle Claude session writes to ~/Desktop/Gazelle Collection/ and posts lines to its
 STATUS.md board. This script copies only what those lines release (see IMAGE_NEEDS.md):
 
   "- HH:MM web images final: <slug>, <slug> (<view>, <view>)"   releases web/images/<slug>/<view>.*
