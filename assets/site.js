@@ -251,7 +251,7 @@ function mountChrome() {
 
 function cardHtml(p, { price = true } = {}) {
   // Photo first; hover shows the line drawing, which is drawn from the same camera so it lands in register.
-  const drawing = drawingView() ? null : productFile(p, "line");
+  const drawing = drawingView() || (S.media.off_register || []).includes(p.slug) ? null : productFile(p, "line");
   const photo = drawingView() ? null : productImage(p) || productFile(p, "front");
   const imgs = [photo || productFile(p, "line"), photo && (drawing || productFile(p, "front"))].filter(Boolean);
   const media = imgs.length

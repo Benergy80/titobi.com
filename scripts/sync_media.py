@@ -199,9 +199,33 @@ def copy_tree(src: Path, dst: Path) -> bool:
     return True
 
 
+REGISTER_MAX_PX = 4.0  # card hover crossfades hero -> line; beyond this median offset the drawing visibly swims
+
+
+def off_register(slug_dir: Path) -> bool | None:
+    """Median distance (px) from the line drawing's outer outline to the hero photo's silhouette edge, vs REGISTER_MAX_PX.
+    None when it can't be measured (files missing, or numpy/scipy/Pillow not installed)."""
+    hero, line = slug_dir / "hero.jpg", slug_dir / "line.png"
+    if not (hero.exists() and line.exists()):
+        return None
+    try:
+        import numpy as np
+        from PIL import Image
+        from scipy import ndimage
+    except ImportError:
+        return None
+    photo = Image.open(hero).convert("L")
+    ink = np.array(Image.open(line).convert("RGBA").resize(photo.size))[..., 3] > 40
+    obj = np.array(photo) < 240
+    edge_dist = ndimage.distance_transform_edt(~(obj ^ ndimage.binary_erosion(obj, iterations=2)))
+    filled = ndimage.binary_fill_holes(ndimage.binary_closing(ink, iterations=3))
+    outline = filled ^ ndimage.binary_erosion(filled, iterations=2)
+    return bool(outline.any() and np.median(edge_dist[outline]) > REGISTER_MAX_PX)
+
+
 def main() -> int:
     lines = status_lines()
-    manifest = {"products": {}, "site": [], "models": [], "lookbook": False}
+    manifest = {"products": {}, "site": [], "models": [], "lookbook": False, "off_register": []}
 
     released = released_files(lines)
     times = line_times(lines)
@@ -236,6 +260,11 @@ def main() -> int:
                 f.unlink()
         if d.name != "site" and not any(d.iterdir()):
             d.rmdir()
+
+    # pieces whose hover drawing doesn't land on the photo: cards fall back to the front photo until it's redrawn
+    manifest["off_register"] = sorted(slug for slug in manifest["products"] if off_register(MEDIA / "products" / slug))
+    if manifest["off_register"]:
+        print("line drawing out of register with hero (card hover disabled):", ", ".join(manifest["off_register"]))
 
     model_times = model_release_times(lines, times)
     if model_times:

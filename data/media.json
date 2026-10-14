@@ -532,5 +532,8 @@
   "wall-shelf",
   "work-wall"
  ],
- "lookbook": true
+ "lookbook": true,
+ "off_register": [
+  "dining-table"
+ ]
 }
