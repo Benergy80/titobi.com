@@ -265,7 +265,7 @@ function cardHtml(p, { price = true } = {}) {
 function heroPanel(name, fallback, caption, dark) {
   const src = siteFile(name) || fallback;
   if (caption && siteFile(name) && caption.when_final) caption = { ...caption, ...caption.when_final };
-  const cap = caption ? `<p class="hero__caption${dark ? " hero__caption--dark" : ""}">${esc(caption.line)}<strong>${esc(caption.name)}</strong></p>` : "";
+  const cap = caption ? `<p class="hero__caption${dark || caption.dark ? " hero__caption--dark" : ""}">${esc(caption.line)}<strong>${esc(caption.name)}</strong></p>` : "";
   const media = /\.mp4$/.test(src) ? `<video src="${src}" autoplay muted loop playsinline></video>` : `<img src="${src}" alt="">`;
   return caption?.link ? `<a class="hero__panel" href="${caption.link}">${media}${cap}</a>` : `<div class="hero__panel">${media}${cap}</div>`;
 }

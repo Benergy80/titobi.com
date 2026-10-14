@@ -9,8 +9,9 @@ STATUS.md board. This script copies only what those lines release (see IMAGE_NEE
         -> media/products/<slug>/ or media/site/ (big stills resized to 1600 px wide)
   "- HH:MM ... HOLD <slug>/<file> ..."   withholds that file until a later release line names it again
   QA_GATES below: files that also need a pass line (e.g. "G: hero-1a PASS") before they're copied;
-  any later QA FAIL line naming a file ("G: scene-work FAIL", "3 FAIL (bench/line ...; ...)") withholds it
-  until a newer release line names it again.
+  any later QA FAIL line naming a file ("G: scene-work FAIL", "3 FAIL (bench/line ...; ...)"), or a QA line's
+  running "Open: a/b, set.jpg ..." list, withholds it until a newer release line names it again.
+  "<slugs> (all views ...)" releases every file in those slugs' folders.
   "- HH:MM lookbook final ..."     web/lookbook/ -> lookbook/
   "- HH:MM A: glbs final"          models/gazelle-<slug>.glb -> media/models/<slug>.glb
                                    (and per-finish gazelle-<slug>--<finish>.glb, if made)
@@ -35,6 +36,8 @@ STAMP = r"^- \d{1,2}:\d{2} "  # milestone lines start "- HH:MM "; quoted mention
 WEB_IMG = re.compile(STAMP + r".*?web images final:\s*(.+)")
 SLUG_VIEWS = re.compile(r"(?<![\w./-])((?:[a-z0-9-]+,\s*)*[a-z0-9-]+)\s*\(([a-z0-9*, -]+)(?:;[^()]*)?\)")  # views end at ";" notes  # "armchair, stool (line, hero)"
 PATH_ITEM = re.compile(r"(?<![\w.-])(_site|[a-z0-9-]+)/([a-z0-9*][\w*-]*)(?:\.(?:jpg|jpeg|png|svg|mp4))?")  # "_site/hero-1a.jpg", "bench/line"
+ALL_VIEWS = re.compile(r"(?<![\w./-])((?:[a-z0-9-]+,\s*)*[a-z0-9-]+)\s*\(all views[^()]*\)")  # "stool, bench (all views, details ...)"
+OPEN_BARE = re.compile(r"(?<![\w/.-])([a-z0-9-]+)\.(?:jpg|jpeg|png|svg)\b")  # "set.jpg" in a QA "Open:" list
 HOLD = re.compile(r"\bHOLD\s+((?:(?:_site|[a-z0-9-]+)/[\w.*-]+[\s,]*)+)")  # "HOLD a/b.png a/b.svg", "HOLD x and HOLD y"
 # Extra sign-off some files need, per the Gazelle session (Oct 13 2026).
 QA_GATES = {("_site", "hero-1a"): "hero-1a"}
@@ -71,6 +74,24 @@ def qa_failures(line: str) -> list[tuple[str, str]]:
     return [k for k in (qa_item(item.split()[0]) for item in block.group(1).split(";") if item.strip()) if k]
 
 
+def qa_open(line: str, state: dict[tuple[str, str], bool]) -> list[tuple[str, str]]:
+    """Files still failing per a QA line's running "Open: a/b, set.jpg + _site/c.jpg (note), slug x5" list.
+    Paths count; a bare file name counts when it matches exactly one released file; "slug xN" can't be resolved."""
+    if not re.match(STAMP + r"G: ", line) or "Open:" not in line:
+        return []
+    text = line.split("Open:", 1)[1]
+    keys = [(f, re.sub(r"\.\w+$", "", stem)) for f, stem in PATH_ITEM.findall(text)]
+    for stem in OPEN_BARE.findall(text):
+        hits = [k for k in state if k[1] == stem]
+        keys += hits if len(hits) == 1 else []
+    return keys
+
+
+def stems_on_disk(slug: str) -> list[str]:
+    d = GAZELLE / "web" / "images" / slug
+    return sorted({f.stem for f in d.iterdir() if f.is_file() and not f.name.startswith((".", "_"))}) if d.is_dir() else []
+
+
 def released_files(lines: list[str]) -> set[tuple[str, str]]:
     """(folder, stem-pattern) pairs that are released and not on hold, in board order."""
     state: dict[tuple[str, str], bool] = {}
@@ -80,9 +101,11 @@ def released_files(lines: list[str]) -> set[tuple[str, str]]:
             continue
         m = WEB_IMG.search(line)
         if m:
-            text = m.group(1).split(" — ")[0]
-            keys = [(slug, view) for slugs, views in SLUG_VIEWS.findall(text)
-                    for slug in re.split(r",\s*", slugs) for view in re.split(r",\s*", views.strip())]
+            text = re.sub(r"\[[^\]]*\]", "", m.group(1).split(" — ")[0])  # drop "[= hero]" notes
+            keys = [(slug, stem) for slugs in ALL_VIEWS.findall(text) for slug in re.split(r",\s*", slugs)
+                    for stem in stems_on_disk(slug)]
+            keys += [(slug, view) for slugs, views in SLUG_VIEWS.findall(text)
+                    for slug in re.split(r",\s*", slugs) for view in re.split(r"\s*,\s*", views.strip())]
             bare = text
             while re.search(r"\([^()]*\)", bare):  # path items outside the (notes)
                 bare = re.sub(r"\([^()]*\)", " ", bare)
@@ -93,7 +116,7 @@ def released_files(lines: list[str]) -> set[tuple[str, str]]:
         for hold in HOLD.finditer(line):
             for key in PATH_ITEM.findall(hold.group(1)):
                 state[key] = False
-        for key in qa_failures(line):
+        for key in qa_failures(line) + qa_open(line, state):
             state[key] = False
     released = {k for k, ok in state.items() if ok}
     for key, name in QA_GATES.items():
@@ -165,7 +188,7 @@ def main() -> int:
     if any(re.match(STAMP + r"[A-Z]: (glbs final|all renders final)", l) for l in lines):
         for glb in sorted((GAZELLE / "models").glob("gazelle-*.glb")):
             slug = glb.stem.removeprefix("gazelle-")
-            if slug in {"desk-48", "dining-set-10"}:  # stale files the Gazelle session said to ignore
+            if slug in {"desk-48", "dining-set-10"} or slug.startswith("showroom-"):  # stale files the Gazelle session said to ignore; room scenes aren't products
                 continue
             dst = MEDIA / "models" / f"{slug}.glb"
             if newer(glb, dst):

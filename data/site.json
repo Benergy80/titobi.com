@@ -51,7 +51,8 @@
    "link": "product.html?p=wall-shelf",
    "when_final": {
     "name": "Gazelle Armchair",
-    "link": "product.html?p=armchair"
+    "link": "product.html?p=armchair",
+    "dark": true
    }
   }
  },
