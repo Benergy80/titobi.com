@@ -46,6 +46,11 @@ The cart is kept in `localStorage`. Checkout opens a Shopify cart permalink,
 `https://heddnt-d1.myshopify.com/cart/<variantId>:<qty>,...`. It's turned on only when every line has a
 variant ID in `data/commerce.json`. Real orders also need the Shopify store launched.
 
+A piece can be shown but kept off sale: `"<slug>": {"for_sale": false}` in `data/commerce.json` (or a
+`NOT FOR SALE` note in the source's `pending`). Its page says "In development" instead of a price, has no Add to cart,
+and the cart drops it. The High Chair stays off sale until it is tested and certified as a children's product;
+its copy makes no safety claims.
+
 ## Publishing
 
 `main` is served by GitHub Pages. Preview: https://benergy80.github.io/titobi.com/ (no custom domain yet).

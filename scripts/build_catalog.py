@@ -18,7 +18,7 @@ BACKUP = SITE / ".private" / "source-products.json"  # has internal notes; kept 
 
 # product_type -> site collection handle
 TYPE_TO_COLLECTION = {
-    "chair": "seating", "stool": "seating", "bench": "seating", "seating": "seating",
+    "chair": "seating", "high chair": "seating", "stool": "seating", "bench": "seating", "seating": "seating",
     "desk": "tables", "table": "tables",
     "storage": "home", "shelving": "home",
     "lamp": "lighting", "lighting": "lighting",
@@ -64,6 +64,8 @@ def main() -> int:
             "finishes": [finish_slug(f) for f in finishes],
             "default_finish": finish_slug(p.get("default_finish") or (finishes[0] if finishes else "")),
             "price": extra.get("price"),
+            # off sale when commerce.json says so or the source marks it NOT FOR SALE (the high chair, until certified)
+            "for_sale": extra.get("for_sale", True) and "NOT FOR SALE" not in str(p.get("pending", "")).upper(),
             "shopify_variants": extra.get("variants", {}),
         })
 

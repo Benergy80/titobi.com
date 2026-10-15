@@ -83,6 +83,7 @@ function writeCart(items) {
   renderCart();
 }
 function addToCart(slug, finish, qty) {
+  if (productBySlug(slug)?.for_sale === false) return;
   const items = cartItems().slice();
   const hit = items.find((i) => i.slug === slug && i.finish === finish);
   if (hit) hit.qty += qty; else items.push({ slug, finish, qty });
@@ -107,7 +108,7 @@ function checkoutUrl(items) {
 }
 
 function renderCart() {
-  const items = cartItems().filter((i) => productBySlug(i.slug));
+  const items = cartItems().filter((i) => productBySlug(i.slug)?.for_sale !== false);
   const count = items.reduce((n, i) => n + i.qty, 0);
   const badge = $("#cart-count");
   if (badge) { badge.textContent = count; badge.hidden = count === 0; }
@@ -363,7 +364,7 @@ function renderProduct(main) {
     <div class="product">
       <div class="product__info"><div class="product__info-sticky"><div class="product__info-inner">
         <h1 class="display product__title">${esc(p.name)}</h1>
-        <p class="product__price">${price ? `${price}` : "Price on request"}</p>
+        <p class="product__price">${p.for_sale === false ? "In development" : price || "Price on request"}</p>
         <div class="product__desc"><p>${esc(p.summary)}</p></div>
         <div class="finish">
           <p>Finish: <span id="finish-name">${esc(finishName(finish))}</span></p>
@@ -371,7 +372,9 @@ function renderProduct(main) {
             ${p.finishes.map((f) => `<button type="button" class="swatch" role="radio" data-f="${f}" aria-checked="${f === finish}" aria-label="${esc(finishName(f))}" title="${esc(finishName(f))}" style="--sw:var(--f-${f})"></button>`).join("")}
           </div>
         </div>
-        <button class="btn" type="button" id="add">Add to cart</button>
+        ${p.for_sale === false
+          ? `<p class="product__note">Not yet available to order. To hear when it is, write to us through the <a class="u" href="page.html?p=contact">contact page</a>.</p>`
+          : `<button class="btn" type="button" id="add">Add to cart</button>`}
         <div class="accordion">
           <details><summary>Dimensions</summary><div class="acc-body">
             ${p.dims_in ? `<p>${esc(p.dims_in)}${p.dims_order ? ` (${esc(p.dims_order)})` : ""}<br>${esc(p.dims_mm || "")}</p>` : "<p>Dimensions to come.</p>"}
