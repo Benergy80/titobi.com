@@ -37,7 +37,8 @@ MEDIA = SITE / "media"
 MAX_W = 1600
 GRACE_S = 120  # a release line's HH:MM is posted just after its files are written
 STAMP = r"^- \d{1,2}:\d{2} "  # milestone lines start "- HH:MM "; quoted mentions elsewhere don't count
-WEB_IMG = re.compile(STAMP + r".*?web images final:\s*(.+)")
+WEB_IMG = re.compile(STAMP + r".*?(?:web images|(?<![\w-])line) final:\s*(.+)")  # D posts drawings as "line final: <slug> (...)"
+SITE_VIEWS = {"lineup"}  # listed under a piece's views but they live in _site (the collection lineup)
 SLUG_VIEWS = re.compile(r"(?<![\w./-])((?:[a-z0-9-]+,\s*)*[a-z0-9-]+)\s*\(([a-z0-9*, -]+)(?:;[^()]*)?\)")  # views end at ";" notes  # "armchair, stool (line, hero)"
 PATH_ITEM = re.compile(r"(?<![\w.-])(_site|[a-z0-9-]+)/([a-z0-9*][\w*-]*)(?:\.(?:jpg|jpeg|png|svg|mp4))?")  # "_site/hero-1a.jpg", "bench/line"
 ALL_VIEWS = re.compile(r"(?<![\w./-])((?:[a-z0-9-]+,\s*)*[a-z0-9-]+)\s*\(all views[^()]*\)")  # "stool, bench (all views, details ...)"
@@ -132,10 +133,12 @@ def released_files(lines: list[str]) -> dict[tuple[str, str], int]:
         m = WEB_IMG.search(line)
         if m:
             text = re.sub(r"\[[^\]]*\]", "", m.group(1).split(" — ")[0])  # drop "[= hero]" notes
+            text = re.sub(r"\b([a-z][a-z-]*-)(\d+)/(\d+)\b", r"\1\2, \1\3", text)  # "detail-line-1/2"
             keys = [(slug, stem) for slugs in ALL_VIEWS.findall(text) for slug in re.split(r",\s*", slugs)
                     for stem in stems_on_disk(slug)]
-            keys += [(slug, view) for slugs, views in SLUG_VIEWS.findall(text)
-                    for slug in re.split(r",\s*", slugs) for view in re.split(r"\s*,\s*", views.strip())]
+            for slugs, views in SLUG_VIEWS.findall(text):
+                for view in (v.split()[0] for v in re.split(r"\s*,\s*", views.strip()) if v.strip()):  # "detail-line-2 ticks removed"
+                    keys += [("_site", view)] if view in SITE_VIEWS else [(slug, view) for slug in re.split(r",\s*", slugs)]
             bare = text
             while re.search(r"\([^()]*\)", bare):  # path items outside the (notes)
                 bare = re.sub(r"\([^()]*\)", " ", bare)
@@ -164,7 +167,7 @@ def model_release_times(lines: list[str], times: list[float | None]) -> dict[str
     out: dict[str, float] = {}
     slugs = sorted({g.stem.removeprefix("gazelle-") for g in (GAZELLE / "models").glob("gazelle-*.glb")}, key=len)
     for line, t in zip(lines, times):
-        if t is None or not re.match(STAMP + r"[A-Z]: .*glbs final", line):
+        if t is None or not re.match(STAMP + r"(?:[A-Z]: )?.*glbs final", line):
             continue
         named = [s for s in slugs if re.search(rf"(?:gazelle-|(?<![\w-])){re.escape(s)}(?![\w-])", line)]
         if re.search(r"\bALL\b", line) or not named:  # "glbs final: ALL 18 ..." / the first, bare "A: glbs final"
