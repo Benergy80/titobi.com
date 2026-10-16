@@ -57,6 +57,11 @@ HOLD_FILES: set[tuple[str, str]] = set()  # (folder, stem-glob)
 # "... all-finish FAIL" since (a FAIL waits for a new release line and a new PASS). Until then the live copy stays.
 ALL_FINISH = re.compile(r"(?:front|back|rear|side|detail-[12])-(?:baltic-birch|walnut|white-oak|wenge|maple)")
 PENDING_QA: set[tuple[str, str]] = set()  # filled by released_files
+# Photos the Gazelle session asked to gate the same way: a release of <slug>'s photos (defaults and finish heroes too)
+# at or after the time waits for that PASS. Oct 16 2026: tower re-flatten at 06:20 (the 00:21 copy stays meanwhile).
+# Clear the entry once the gated photos are live.
+GATED_FROM = {"tower": datetime(2026, 10, 16, 6, 20).timestamp()}
+PHOTO = re.compile(r"(?:hero|front|back|rear|side|detail-[12])(?:-[a-z-]+)?|finish-[a-z-]+")
 
 
 def held(folder: str, stem: str) -> bool:
@@ -181,11 +186,14 @@ def released_files(lines: list[str]) -> dict[tuple[str, str], int]:
                      for l in lines[released_at[key] + 1:])
         if not passed:
             del released[key]
+    times = line_times(lines)
     for (folder, stem), i in list(released.items()):
         if folder == "_site":
             continue
         stems = [s for s in stems_on_disk(folder) if fnmatch(s, stem)] if "*" in stem else [stem]
-        pending = {(folder, s) for s in stems if ALL_FINISH.fullmatch(s)} if not all_finish_passed(lines, folder, i) else set()
+        gated = folder in GATED_FROM and times[i] is not None and times[i] >= GATED_FROM[folder]
+        pending = ({(folder, s) for s in stems if ALL_FINISH.fullmatch(s) or (gated and PHOTO.fullmatch(s))}
+                   if not all_finish_passed(lines, folder, i) else set())
         if not pending:
             continue
         PENDING_QA.update(pending)
