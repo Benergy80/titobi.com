@@ -35,6 +35,9 @@ Pages show a light grey tile with the typology line drawing wherever an image is
 - `product.html?p=<slug>&finish=<finish>`:
   - left: sticky info and accordions
   - right: stacked gallery (hero, front, back, rear, side, details), then the 3D viewer
+  - picking a finish swaps every photo in the gallery (Ben, Oct 15 2026): `<view>.jpg` is the default
+    finish, `<view>-<finish>.jpg` the others, the hero's are `finish-<finish>.jpg`. A view not yet shot in
+    that finish is hidden; the hero falls back to the default with "(photo coming)". Drawings don't change.
 - `page.html?p=about|contact|info|lookbook`
 
 The DWR deck is not on the site (Ben, Oct 13 2026). No downloads anywhere on the site: no file links,

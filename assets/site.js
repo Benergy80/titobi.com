@@ -45,6 +45,12 @@ function productImage(p, finish) {
   return (finish && productFile(p, `finish-${finish}`)) || productFile(p, "hero");
 }
 const defaultFinish = (p) => (p.finishes.includes(p.default_finish) ? p.default_finish : p.finishes[0]);
+/* every gallery photo has a frame per finish from the same camera: <view> is the default finish, <view>-<finish>
+   the others (the hero's are finish-<finish>). null when that view isn't shot in that finish yet. */
+function viewImage(p, view, finish) {
+  const own = productFile(p, view === "hero" ? `finish-${finish}` : `${view}-${finish}`);
+  return finish === defaultFinish(p) ? productFile(p, view) || own : own;
+}
 const SITE_EXT_ORDER = ["svg", "mp4", "jpg", "jpeg", "png", "json"];  // vector logo and video loops win over stills
 function siteFile(name) {
   const hits = (S.media.site || []).filter((f) => f.replace(/\.[^.]+$/, "") === name);
@@ -352,10 +358,15 @@ function renderProduct(main) {
   const price = formatPrice(p.price);
   document.title = `${p.name} – Titobi Studio`;
 
-  const views = GALLERY_ORDER.map((v) => [v, productFile(p, v)]).filter(([, src]) => src);
+  // a view missing in the chosen finish is hidden rather than shown in the wrong wood; the hero falls back to the default
+  const photoSrc = (v, f) => viewImage(p, v, f) || (v === "hero" ? productFile(p, "hero") : null);
+  const views = GALLERY_ORDER.filter((v) => p.finishes.some((f) => viewImage(p, v, f)));
   const drawings = DRAWING_ORDER.map((v) => productFile(p, v)).filter(Boolean)
     .map((src) => `<div class="gallery__item is-drawing"><img src="${src}" alt="" loading="lazy"></div>`).join("");
-  const photos = views.map(([v, src]) => `<div class="gallery__item"><img ${v === "hero" ? 'id="main-img" ' : ""}src="${v === "hero" ? productImage(p, finish) : src}" alt="${v === "hero" ? esc(p.name) : ""}" ${v === "hero" ? "" : 'loading="lazy"'}></div>`).join("");
+  const photos = views.map((v) => {
+    const src = photoSrc(v, finish);
+    return `<div class="gallery__item" data-view="${v}"${src ? "" : " hidden"}><img ${src ? `src="${src}" ` : ""}alt="${v === "hero" ? esc(p.name) : ""}" ${v === "hero" ? "" : 'loading="lazy"'}></div>`;
+  }).join("");
   const gallery = photos + drawings || `<div class="gallery__item is-placeholder"><img src="${typologyImage(p.collection)}" alt=""></div>`;
   const viewer = model ? `<div class="gallery__item"><model-viewer src="${modelSrc(p, finish)}" camera-controls tone-mapping="agx" shadow-intensity="0.4" exposure="1.1" alt="3D model of the ${esc(p.name)}" loading="lazy"></model-viewer></div>` : "";
   const dims = productFile(p, "dims");
@@ -367,7 +378,7 @@ function renderProduct(main) {
         <p class="product__price">${p.for_sale === false ? "In development" : price || "Price on request"}</p>
         <div class="product__desc"><p>${esc(p.summary)}</p></div>
         <div class="finish">
-          <p>Finish: <span id="finish-name">${esc(finishName(finish))}</span></p>
+          <p>Finish: <span id="finish-name">${esc(finishName(finish))}${viewImage(p, "hero", finish) ? "" : " (photo coming)"}</span></p>
           <div class="swatches" role="radiogroup" aria-label="Finish">
             ${p.finishes.map((f) => `<button type="button" class="swatch" role="radio" data-f="${f}" aria-checked="${f === finish}" aria-label="${esc(finishName(f))}" title="${esc(finishName(f))}" style="--sw:var(--f-${f})"></button>`).join("")}
           </div>
@@ -399,10 +410,12 @@ function renderProduct(main) {
     if (sw) {
       finish = sw.dataset.f;
       main.querySelectorAll(".swatch").forEach((b) => b.setAttribute("aria-checked", String(b === sw)));
-      const pending = finish !== defaultFinish(p) && !productFile(p, `finish-${finish}`);
-      $("#finish-name").textContent = finishName(finish) + (pending ? " (photo coming)" : "");
-      const img = $("#main-img");
-      if (img) img.src = finish === defaultFinish(p) ? productFile(p, "hero") || img.src : productImage(p, finish) || img.src;
+      $("#finish-name").textContent = finishName(finish) + (viewImage(p, "hero", finish) ? "" : " (photo coming)");
+      main.querySelectorAll(".gallery__item[data-view]").forEach((item) => {
+        const src = photoSrc(item.dataset.view, finish), img = item.querySelector("img");
+        item.hidden = !src;
+        if (src && img.getAttribute("src") !== src) img.src = src;
+      });
       showFinishIn3D(mv, p, finish);
       history.replaceState(null, "", `?p=${p.slug}&finish=${finish}`);
     }
