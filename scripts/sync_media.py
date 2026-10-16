@@ -60,7 +60,7 @@ PENDING_QA: set[tuple[str, str]] = set()  # filled by released_files
 # Photos the Gazelle session asked to gate the same way: a release of <slug>'s photos (defaults and finish heroes too)
 # at or after the time waits for that PASS. Oct 16 2026: tower re-flatten at 06:20 (the 00:21 copy stays meanwhile).
 # Clear the entry once the gated photos are live.
-GATED_FROM = {"tower": datetime(2026, 10, 16, 6, 20).timestamp()}
+GATED_FROM: dict[str, float] = {}  # e.g. {"tower": datetime(2026, 10, 16, 6, 20).timestamp()}
 PHOTO = re.compile(r"(?:hero|front|back|rear|side|detail-[12])(?:-[a-z-]+)?|finish-[a-z-]+")
 
 
