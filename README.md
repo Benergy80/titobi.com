@@ -26,6 +26,8 @@ Titobi Shopify store (`heddnt-d1`).
 - `lookbook final` for the lookbook web export
 
 Rerun it whenever a new line appears. Old renders (`renders/_superseded-*`) are never used.
+`HOLD_SLUGS` / `HOLD_FILES` at the top of the script freeze pieces or files at the copy the site already has,
+whatever STATUS says, until the Gazelle session sends an explicit release. Clear the entry, rerun, push.
 Pages show a light grey tile with the typology line drawing wherever an image isn't released yet.
 
 ## Pages

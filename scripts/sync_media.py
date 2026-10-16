@@ -47,6 +47,17 @@ HOLD = re.compile(r"\bHOLD\s+((?:(?:_site|[a-z0-9-]+)/[\w.*-]+[\s,]*)+)")  # "HO
 # Extra sign-off some files need, per the Gazelle session (Oct 13 2026).
 QA_GATES = {("_site", "hero-1a"): "hero-1a"}
 
+# Held at the Gazelle session's request until it says "released": the site keeps exactly the copy it has now
+# (nothing added, replaced or removed), whatever STATUS says. Clear an entry when they release it.
+HOLD_SLUGS = {"tower", "stool", "stool-with-back"}  # Oct 15: tower v10 top, two-ply stool seats (photos, drawings, GLB)
+HOLD_FILES = {("_site", "lineup")}  # the lineup redraws with those pieces
+HOLD_FILES |= {("armchair", f"{v}-{w}") for v in ("front", "back", "rear", "side", "detail-1", "detail-2")
+               for w in ("walnut", "white-oak", "wenge", "maple")}  # 22:13 all-finish views wait for G's QA PASS
+
+
+def held(folder: str, stem: str) -> bool:
+    return folder in HOLD_SLUGS or any(f == folder and fnmatch(stem, pat) for f, pat in HOLD_FILES)
+
 
 def status_lines() -> list[str]:
     return STATUS.read_text().splitlines() if STATUS.exists() else []
@@ -243,6 +254,8 @@ def main() -> int:
         names = []
         if src_dir.is_dir():
             for f in sorted(src_dir.iterdir()):
+                if held(folder, f.stem):  # the copy already on the site is added back below
+                    continue
                 hits = [t for pat, t in patterns.items() if fnmatch(f.stem, pat)]
                 if f.suffix.lower() not in {".jpg", ".jpeg", ".png", ".svg", ".mp4", ".json"} or not hits:
                     continue
@@ -257,6 +270,13 @@ def main() -> int:
                 manifest["site"] = names
             else:
                 manifest["products"][folder] = names
+    # held files: keep whatever the site has now
+    for d in [MEDIA / "site", *(MEDIA / "products").glob("*")]:
+        folder = "_site" if d.name == "site" else d.name
+        kept = [f.name for f in d.iterdir() if f.is_file() and held(folder, f.stem)] if d.is_dir() else []
+        if kept:
+            have = manifest["site"] if folder == "_site" else manifest["products"].setdefault(folder, [])
+            have[:] = sorted(set(have) | set(kept))
     # drop anything copied earlier that is no longer released (held, failed QA)
     for d in [MEDIA / "site", *(MEDIA / "products").glob("*")]:
         if not d.is_dir():
@@ -268,6 +288,7 @@ def main() -> int:
         if d.name != "site" and not any(d.iterdir()):
             d.rmdir()
 
+    manifest["products"] = dict(sorted(manifest["products"].items()))
     # pieces whose hover drawing doesn't land on the photo: cards fall back to the front photo until it's redrawn
     manifest["off_register"] = sorted(slug for slug in manifest["products"] if off_register(MEDIA / "products" / slug))
     if manifest["off_register"]:
@@ -280,7 +301,7 @@ def main() -> int:
             if slug in {"desk-48", "dining-set-10"} or slug.startswith("showroom-"):  # stale files the Gazelle session said to ignore; room scenes aren't products
                 continue
             dst = MEDIA / "models" / f"{slug}.glb"
-            if unreleased(glb, model_times.get(slug)):  # rewritten since its glbs final line: keep what we have
+            if slug in HOLD_SLUGS or unreleased(glb, model_times.get(slug)):  # rewritten since its glbs final line: keep what we have
                 if dst.exists():
                     manifest["models"].append(slug)
                 continue
