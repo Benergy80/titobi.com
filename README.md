@@ -28,6 +28,8 @@ Titobi Shopify store (`heddnt-d1`).
 Rerun it whenever a new line appears. Old renders (`renders/_superseded-*`) are never used.
 `HOLD_SLUGS` / `HOLD_FILES` at the top of the script freeze pieces or files at the copy the site already has,
 whatever STATUS says, until the Gazelle session sends an explicit release. Clear the entry, rerun, push.
+A piece's all-finish views (`<view>-<wood>`) need both its release line and a later
+`- HH:MM G: QA <slug> all-finish PASS` with no `all-finish FAIL` since; until then the live copy stays.
 Pages show a light grey tile with the typology line drawing wherever an image isn't released yet.
 
 ## Pages

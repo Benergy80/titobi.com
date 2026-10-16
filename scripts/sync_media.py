@@ -53,8 +53,21 @@ HOLD_SLUGS = {"tower", "stool", "stool-with-back"}  # Oct 15: tower v10 top, two
 HOLD_FILES = {("_site", "lineup")}  # the lineup redraws with those pieces
 
 
+# A piece's all-finish views also need "- HH:MM G: QA <slug> all-finish PASS" after their release line, with no
+# "... all-finish FAIL" since (a FAIL waits for a new release line and a new PASS). Until then the live copy stays.
+ALL_FINISH = re.compile(r"(?:front|back|rear|side|detail-[12])-(?:baltic-birch|walnut|white-oak|wenge|maple)")
+PENDING_QA: set[tuple[str, str]] = set()  # filled by released_files
+
+
 def held(folder: str, stem: str) -> bool:
-    return folder in HOLD_SLUGS or any(f == folder and fnmatch(stem, pat) for f, pat in HOLD_FILES)
+    return (folder in HOLD_SLUGS or (folder, stem) in PENDING_QA
+            or any(f == folder and fnmatch(stem, pat) for f, pat in HOLD_FILES))
+
+
+def all_finish_passed(lines: list[str], slug: str, released_at: int) -> bool:
+    verdicts = [m.group(1) for l in lines[released_at + 1:]
+                if (m := re.match(STAMP + rf"G: QA {re.escape(slug)} all-finish (PASS|FAIL)\b", l))]
+    return "PASS" in verdicts and "FAIL" not in verdicts
 
 
 def status_lines() -> list[str]:
@@ -168,6 +181,16 @@ def released_files(lines: list[str]) -> dict[tuple[str, str], int]:
                      for l in lines[released_at[key] + 1:])
         if not passed:
             del released[key]
+    for (folder, stem), i in list(released.items()):
+        if folder == "_site":
+            continue
+        stems = [s for s in stems_on_disk(folder) if fnmatch(s, stem)] if "*" in stem else [stem]
+        pending = {(folder, s) for s in stems if ALL_FINISH.fullmatch(s)} if not all_finish_passed(lines, folder, i) else set()
+        if not pending:
+            continue
+        PENDING_QA.update(pending)
+        if "*" not in stem:
+            del released[(folder, stem)]
     return released
 
 
