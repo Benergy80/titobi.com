@@ -49,8 +49,8 @@ QA_GATES = {("_site", "hero-1a"): "hero-1a"}
 
 # Held at the Gazelle session's request until it says "released": the site keeps exactly the copy it has now
 # (nothing added, replaced or removed), whatever STATUS says. Clear an entry when they release it.
-HOLD_SLUGS = {"tower", "stool", "stool-with-back"}  # Oct 15: tower v10 top, two-ply stool seats (photos, drawings, GLB)
-HOLD_FILES = {("_site", "lineup")}  # the lineup redraws with those pieces
+HOLD_SLUGS = {"tower"}  # Oct 15: tower Wall-Shelf top (photos, drawings, GLB); stools released Oct 16
+HOLD_FILES: set[tuple[str, str]] = set()  # (folder, stem-glob)
 
 
 # A piece's all-finish views also need "- HH:MM G: QA <slug> all-finish PASS" after their release line, with no

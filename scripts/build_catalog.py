@@ -18,7 +18,7 @@ BACKUP = SITE / ".private" / "source-products.json"  # has internal notes; kept 
 
 # Copy held with the media (sync_media.py HOLD_SLUGS) until the Gazelle session releases these pieces:
 # their entries are kept exactly as in the current data/catalog.json. Clear together with HOLD_SLUGS.
-HOLD_COPY = {"tower", "stool", "stool-with-back"}  # Oct 15: tower v11 top, two-ply stool seats
+HOLD_COPY = {"tower"}  # Oct 15: tower Wall-Shelf top; stools released Oct 16
 
 # product_type -> site collection handle
 TYPE_TO_COLLECTION = {
