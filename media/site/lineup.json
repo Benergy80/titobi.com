@@ -4,6 +4,7 @@
  "floor_y_px": 810.0,
  "px_per_m": 270.959,
  "px_per_inch": 6.882,
+ "gap_px": 38.6,
  "order": "tables, seating, home",
  "pieces": [
   {
@@ -16,105 +17,119 @@
   {
    "slug": "desk-36",
    "collection": "tables",
-   "x_centre_px": 574.3,
+   "x_centre_px": 542.9,
    "width_px": 249.3,
    "height_px": 206.5
   },
   {
    "slug": "dining-table",
    "collection": "tables",
-   "x_centre_px": 1175.4,
+   "x_centre_px": 1112.6,
    "width_px": 812.9,
    "height_px": 203.2
   },
   {
    "slug": "armchair",
    "collection": "seating",
-   "x_centre_px": 1730.4,
+   "x_centre_px": 1636.1,
    "width_px": 157.2,
    "height_px": 213.5
   },
   {
    "slug": "side-chair",
    "collection": "seating",
-   "x_centre_px": 1957.6,
+   "x_centre_px": 1831.9,
    "width_px": 157.2,
    "height_px": 213.6
   },
   {
    "slug": "bullhorn-chair",
    "collection": "seating",
-   "x_centre_px": 2184.8,
+   "x_centre_px": 2027.6,
    "width_px": 157.2,
    "height_px": 213.6
   },
   {
    "slug": "stool-with-back",
    "collection": "seating",
-   "x_centre_px": 2379.7,
+   "x_centre_px": 2191.1,
    "width_px": 92.8,
    "height_px": 271.4
   },
   {
    "slug": "stool",
    "collection": "seating",
-   "x_centre_px": 2542.5,
+   "x_centre_px": 2322.5,
    "width_px": 92.8,
    "height_px": 227.2
   },
   {
+   "slug": "high-chair",
+   "collection": "seating",
+   "x_centre_px": 2475.8,
+   "width_px": 136.7,
+   "height_px": 278.6
+  },
+  {
    "slug": "bench",
    "collection": "seating",
-   "x_centre_px": 2862.2,
+   "x_centre_px": 2786.0,
    "width_px": 406.4,
    "height_px": 122.1
   },
   {
    "slug": "lounge-chair",
    "collection": "seating",
-   "x_centre_px": 3222.1,
+   "x_centre_px": 3114.4,
    "width_px": 173.4,
    "height_px": 206.0
   },
   {
    "slug": "rocker",
    "collection": "seating",
-   "x_centre_px": 3465.5,
+   "x_centre_px": 3326.4,
    "width_px": 173.4,
    "height_px": 212.8
   },
   {
    "slug": "settee",
    "collection": "seating",
-   "x_centre_px": 3784.8,
+   "x_centre_px": 3614.3,
    "width_px": 325.2,
    "height_px": 224.2
   },
   {
    "slug": "credenza",
    "collection": "home",
-   "x_centre_px": 4234.1,
+   "x_centre_px": 4032.2,
    "width_px": 433.5,
    "height_px": 206.1
   },
   {
+   "slug": "console",
+   "collection": "home",
+   "x_centre_px": 4432.1,
+   "width_px": 289.1,
+   "height_px": 247.8
+  },
+  {
    "slug": "wall-shelf",
    "collection": "home",
-   "x_centre_px": 4644.8,
+   "x_centre_px": 4739.1,
    "width_px": 247.8,
    "height_px": 638.2
   },
   {
    "slug": "cubby-shelf",
    "collection": "home",
-   "x_centre_px": 4962.5,
+   "x_centre_px": 5025.4,
    "width_px": 247.8,
    "height_px": 638.2
   },
   {
    "slug": "tower",
    "collection": "home",
-   "x_centre_px": 5262.1,
+   "x_centre_px": 5293.5,
    "width_px": 211.4,
    "height_px": 522.2
   },

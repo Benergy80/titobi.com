@@ -56,6 +56,7 @@
    ],
    "default_finish": "baltic-birch",
    "price": null,
+   "for_sale": true,
    "shopify_variants": {}
   },
   {
@@ -80,6 +81,7 @@
    ],
    "default_finish": "baltic-birch",
    "price": null,
+   "for_sale": true,
    "shopify_variants": {}
   },
   {
@@ -104,6 +106,7 @@
    ],
    "default_finish": "baltic-birch",
    "price": null,
+   "for_sale": true,
    "shopify_variants": {}
   },
   {
@@ -128,6 +131,7 @@
    ],
    "default_finish": "baltic-birch",
    "price": null,
+   "for_sale": true,
    "shopify_variants": {}
   },
   {
@@ -152,6 +156,7 @@
    ],
    "default_finish": "baltic-birch",
    "price": null,
+   "for_sale": true,
    "shopify_variants": {}
   },
   {
@@ -176,6 +181,7 @@
    ],
    "default_finish": "baltic-birch",
    "price": null,
+   "for_sale": true,
    "shopify_variants": {}
   },
   {
@@ -200,6 +206,7 @@
    ],
    "default_finish": "baltic-birch",
    "price": null,
+   "for_sale": true,
    "shopify_variants": {}
   },
   {
@@ -224,6 +231,7 @@
    ],
    "default_finish": "baltic-birch",
    "price": null,
+   "for_sale": true,
    "shopify_variants": {}
   },
   {
@@ -248,6 +256,7 @@
    ],
    "default_finish": "walnut",
    "price": null,
+   "for_sale": true,
    "shopify_variants": {}
   },
   {
@@ -272,6 +281,7 @@
    ],
    "default_finish": "baltic-birch",
    "price": null,
+   "for_sale": true,
    "shopify_variants": {}
   },
   {
@@ -296,6 +306,7 @@
    ],
    "default_finish": "baltic-birch",
    "price": null,
+   "for_sale": true,
    "shopify_variants": {}
   },
   {
@@ -320,6 +331,7 @@
    ],
    "default_finish": "baltic-birch",
    "price": null,
+   "for_sale": true,
    "shopify_variants": {}
   },
   {
@@ -344,6 +356,7 @@
    ],
    "default_finish": "baltic-birch",
    "price": null,
+   "for_sale": true,
    "shopify_variants": {}
   },
   {
@@ -368,6 +381,7 @@
    ],
    "default_finish": "baltic-birch",
    "price": null,
+   "for_sale": true,
    "shopify_variants": {}
   },
   {
@@ -392,6 +406,7 @@
    ],
    "default_finish": "baltic-birch",
    "price": null,
+   "for_sale": true,
    "shopify_variants": {}
   },
   {
@@ -416,6 +431,7 @@
    ],
    "default_finish": "baltic-birch",
    "price": null,
+   "for_sale": true,
    "shopify_variants": {}
   },
   {
@@ -440,6 +456,57 @@
    ],
    "default_finish": "baltic-birch",
    "price": null,
+   "for_sale": true,
+   "shopify_variants": {}
+  },
+  {
+   "slug": "console",
+   "handle": "gazelle-console",
+   "name": "Gazelle Console",
+   "type": "Storage",
+   "collection": "home",
+   "summary": "A tall, compact case on the bench's base. Its top, sides and bottom are one continuous bent lamination, so the ply stripes run unbroken around the rounded corners, and two sliding doors with routed finger pulls close the front. The base's end frames branch at filleted Y-nodes, like the bench and credenza.",
+   "description_html": "<p>A tall, compact case on the bench's base. Its top, sides and bottom are one continuous bent lamination, so the ply stripes run unbroken around the rounded corners, and two sliding doors with routed finger pulls close the front. The base's end frames branch at filleted Y-nodes, like the bench and credenza.</p>\n<p>The case is one bent lamination of thin Baltic birch veneers, laid up to the same stripe pitch as the 18 mm plies, so the stripes follow the bend round every corner. The doors, back, shelf and base are CNC-cut from 18 mm Baltic birch plies, the base members laminated in pairs, with a 5/8\" roundover on each ply. In Walnut, White Oak, Wenge and Maple the case is bent from veneers of that wood and every other part is solid hardwood.</p>\n<p>Available in Baltic Birch, or in solid Walnut, White Oak, Wenge and Maple.</p>\n<ul>\n<li><strong>Dimensions:</strong> 42.0 × 19.1 × 36.0 in (1067 × 485 × 914 mm), W × D × H</li>\n\n<li><strong>Finishes:</strong> Baltic Birch, Walnut, White Oak, Wenge, Maple</li>\n<li><strong>Baltic Birch:</strong> bent-lamination case; base and doors in 18 mm plies, 5/8\" roundover on each ply</li>\n<li><strong>Walnut, White Oak, Wenge, Maple:</strong> solid hardwood</li>\n</ul>\n<p>Designed by Titobi Studios, a collaboration of Norman Teague Design Studios and Max Davis Design in Chicago.</p>",
+   "dims_in": "42.0 × 19.1 × 36.0 in",
+   "dims_mm": "1067 × 485 × 914 mm",
+   "dims_order": "W × D × H",
+   "materials": "Baltic Birch: 18 mm plies laminated in pairs, 5/8\" roundover per ply, stripes along every member. Also in solid Walnut, White Oak, Wenge and Maple.",
+   "construction": "The case is one bent lamination of thin Baltic birch veneers, laid up to the same stripe pitch as the 18 mm plies, so the stripes follow the bend round every corner. The doors, back, shelf and base are CNC-cut from 18 mm Baltic birch plies, the base members laminated in pairs, with a 5/8\" roundover on each ply. In Walnut, White Oak, Wenge and Maple the case is bent from veneers of that wood and every other part is solid hardwood.",
+   "finishes": [
+    "baltic-birch",
+    "walnut",
+    "white-oak",
+    "wenge",
+    "maple"
+   ],
+   "default_finish": "baltic-birch",
+   "price": null,
+   "for_sale": true,
+   "shopify_variants": {}
+  },
+  {
+   "slug": "high-chair",
+   "handle": "gazelle-high-chair",
+   "name": "Gazelle High Chair",
+   "type": "High Chair",
+   "collection": "seating",
+   "summary": "The Stool with Back's side frames, redrawn at high-chair height for a child at the table. Solid side guards close the sides, a fixed post stands at the front of the seat, the footrest moves between three heights on brass pins, the back is slotted for a harness, and the tray lifts on and off the arms.",
+   "description_html": "<p>The Stool with Back's side frames, redrawn at high-chair height for a child at the table. Solid side guards close the sides, a fixed post stands at the front of the seat, the footrest moves between three heights on brass pins, the back is slotted for a harness, and the tray lifts on and off the arms.</p>\n<p>In Baltic Birch, every part is CNC-cut from 18 mm plies laminated in pairs, and each ply gets a 5/8\" roundover, so the ply stripes run along every member. Walnut, White Oak, Wenge and Maple are solid hardwood, with the grain running along each member.</p>\n<p>Available in Baltic Birch, or in solid Walnut, White Oak, Wenge and Maple.</p>\n<ul>\n<li><strong>Dimensions:</strong> 19.9 × 24.1 × 40.5 in (505 × 611 × 1029 mm), W × D × H, depth with tray</li>\n<li><strong>Seat height:</strong> 21.7 in (551 mm)</li>\n<li><strong>Finishes:</strong> Baltic Birch, Walnut, White Oak, Wenge, Maple</li>\n<li><strong>Baltic Birch:</strong> 18 mm plies laminated in pairs, 5/8\" roundover on each ply</li>\n<li><strong>Walnut, White Oak, Wenge, Maple:</strong> solid hardwood</li>\n</ul>\n<p>Designed by Titobi Studios, a collaboration of Norman Teague Design Studios and Max Davis Design in Chicago.</p>",
+   "dims_in": "19.9 × 24.1 × 40.5 in",
+   "dims_mm": "505 × 611 × 1029 mm",
+   "dims_order": "W × D × H",
+   "materials": "Baltic Birch: 18 mm plies laminated in pairs, 5/8\" roundover per ply, stripes along every member. Also in solid Walnut, White Oak, Wenge and Maple.",
+   "construction": "In Baltic Birch, every part is CNC-cut from 18 mm plies laminated in pairs, and each ply gets a 5/8\" roundover, so the ply stripes run along every member. Walnut, White Oak, Wenge and Maple are solid hardwood, with the grain running along each member.",
+   "finishes": [
+    "baltic-birch",
+    "walnut",
+    "white-oak",
+    "wenge",
+    "maple"
+   ],
+   "default_finish": "baltic-birch",
+   "price": null,
+   "for_sale": false,
    "shopify_variants": {}
   }
  ]
