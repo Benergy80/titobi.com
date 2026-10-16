@@ -16,6 +16,10 @@ SITE = Path(__file__).resolve().parent.parent
 DATA = SITE / "data"
 BACKUP = SITE / ".private" / "source-products.json"  # has internal notes; kept out of the public repo
 
+# Copy held with the media (sync_media.py HOLD_SLUGS) until the Gazelle session releases these pieces:
+# their entries are kept exactly as in the current data/catalog.json. Clear together with HOLD_SLUGS.
+HOLD_COPY = {"tower", "stool", "stool-with-back"}  # Oct 15: tower v11 top, two-ply stool seats
+
 # product_type -> site collection handle
 TYPE_TO_COLLECTION = {
     "chair": "seating", "high chair": "seating", "stool": "seating", "bench": "seating", "seating": "seating",
@@ -68,6 +72,10 @@ def main() -> int:
             "for_sale": extra.get("for_sale", True) and "NOT FOR SALE" not in str(p.get("pending", "")).upper(),
             "shopify_variants": extra.get("variants", {}),
         })
+
+    current = json.loads((DATA / "catalog.json").read_text()) if (DATA / "catalog.json").exists() else {}
+    live = {p["slug"]: p for p in current.get("products", [])}
+    products = [live[p["slug"]] if p["slug"] in HOLD_COPY and p["slug"] in live else p for p in products]
 
     site = json.loads((DATA / "site.json").read_text())
     names = {}
