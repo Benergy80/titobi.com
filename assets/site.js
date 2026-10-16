@@ -428,7 +428,7 @@ const PAGES = {
     <p>Titobi means BIG.</p>
     <p>Titobi Studio is a collaboration of Norman Teague Design Studios and Max Davis Design in Chicago.</p>
     <h2>The Gazelle Collection</h2>
-    <p>Seventeen pieces for sitting, working and storing, all built the same way. Each is cut from 18 mm Baltic birch and laminated in pairs. Each ply gets a 5/8" roundover, so every edge shows its laminations as stripes that follow the outline.</p>
+    <p>Nineteen pieces for sitting, working and storing, all built the same way. Each is cut from 18 mm Baltic birch and laminated in pairs. Each ply gets a 5/8" roundover, so every edge shows its laminations as stripes that follow the outline.</p>
     ${sectionFigure()}`,
   contact: () => `<h1 class="display">Contact</h1>
     <p>Titobi Studio, LLC<br>Chicago, Illinois</p>
