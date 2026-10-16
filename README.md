@@ -38,6 +38,9 @@ Pages show a light grey tile with the typology line drawing wherever an image is
   - picking a finish swaps every photo in the gallery (Ben, Oct 15 2026): `<view>.jpg` is the default
     finish, `<view>-<finish>.jpg` the others, the hero's are `finish-<finish>.jpg`. A view not yet shot in
     that finish is hidden; the hero falls back to the default with "(photo coming)". Drawings don't change.
+- Room scenes (home hero-1a, the About band) get a Baltic Birch / Walnut / Wenge switch (Ben, Oct 15 2026),
+  birch on every load. Files: `_site/<scene>-walnut.jpg`, `-wenge.jpg` (hero-1a's are `scene-hero-*`). The
+  switch shows only once at least one wood version is synced.
 - `page.html?p=about|contact|info|lookbook`
 
 The DWR deck is not on the site (Ben, Oct 13 2026). No downloads anywhere on the site: no file links,

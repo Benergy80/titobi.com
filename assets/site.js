@@ -239,6 +239,17 @@ function mountChrome() {
       return setQty(idx, cartItems()[idx].qty + +step.dataset.step);
     }
     if (e.target.id === "checkout" && e.target.dataset.url) location.href = e.target.dataset.url;
+    const wood = e.target.closest(".wood");
+    if (wood) {
+      wood.parentElement.querySelectorAll(".wood").forEach((b) => b.setAttribute("aria-checked", String(b === wood)));
+      document.querySelectorAll(`img[data-scene="${wood.dataset.scene}"]`).forEach((img) => { img.src = sceneFile(wood.dataset.scene, wood.dataset.wood); });
+    }
+  });
+  document.addEventListener("pointerover", (e) => {  // fetch the other woods once the pointer reaches a switch
+    const group = e.target.closest?.(".woods");
+    if (!group || group.dataset.warm) return;
+    group.dataset.warm = "1";
+    group.querySelectorAll(".wood").forEach((b) => { new Image().src = sceneFile(b.dataset.scene, b.dataset.wood); });
   });
   document.addEventListener("change", (e) => {
     const box = e.target.closest(".drawer .qty");
@@ -269,11 +280,25 @@ function cardHtml(p, { price = true } = {}) {
     <div class="card__name">${esc(p.name)}</div>${cost ? `<div class="card__price">${cost} USD</div>` : ""}</a></li>`;
 }
 
+/* room scenes: the base file is Baltic Birch, with <scene>-walnut / -wenge versions from the same camera
+   (hero-1a's are scene-hero-*). The visitor switches between whichever exist; birch on every page load. */
+const SCENE_WOODS = ["baltic-birch", "walnut", "wenge"];
+function sceneFile(name, wood) {
+  return wood === "baltic-birch" ? siteFile(name) : siteFile(`${name === "hero-1a" ? "scene-hero" : name}-${wood}`);
+}
+function woodSwitch(name) {
+  const woods = SCENE_WOODS.filter((w) => sceneFile(name, w));
+  if (woods.length < 2) return "";
+  return `<div class="woods" role="radiogroup" aria-label="Wood">${woods.map((w) => `<button type="button" class="wood" role="radio" data-scene="${name}" data-wood="${w}" aria-checked="${w === "baltic-birch"}" aria-label="${esc(finishName(w))}" title="${esc(finishName(w))}" style="--sw:var(--f-${w})"></button>`).join("")}</div>`;
+}
+
 function heroPanel(name, fallback, caption, dark) {
   const src = siteFile(name) || fallback;
   if (caption && siteFile(name) && caption.when_final) caption = { ...caption, ...caption.when_final };
   const cap = caption ? `<p class="hero__caption${dark || caption.dark ? " hero__caption--dark" : ""}">${esc(caption.line)}<strong>${esc(caption.name)}</strong></p>` : "";
-  const media = /\.mp4$/.test(src) ? `<video src="${src}" autoplay muted loop playsinline></video>` : `<img src="${src}" alt="">`;
+  const media = /\.mp4$/.test(src) ? `<video src="${src}" autoplay muted loop playsinline></video>` : `<img src="${src}" alt=""${siteFile(name) ? ` data-scene="${name}"` : ""}>`;
+  const woods = siteFile(name) ? woodSwitch(name) : "";
+  if (woods) return `<div class="hero__panel">${caption?.link ? `<a class="hero__fill" href="${caption.link}">${media}${cap}</a>` : media + cap}${woods}</div>`;  // buttons can't sit inside the link
   return caption?.link ? `<a class="hero__panel" href="${caption.link}">${media}${cap}</a>` : `<div class="hero__panel">${media}${cap}</div>`;
 }
 
@@ -428,7 +453,7 @@ const PAGES = {
     <p>Titobi means BIG.</p>
     <p>Titobi Studio is a collaboration of Norman Teague Design Studios and Max Davis Design in Chicago.</p>
     <h2>The Gazelle Collection</h2>
-    <p>Nineteen pieces for sitting, working and storing, all built the same way. Each is cut from 18 mm Baltic birch and laminated in pairs. Each ply gets a 5/8" roundover, so every edge shows its laminations as stripes that follow the outline.</p>
+    <p>Nineteen pieces for sitting, working and storing. In Baltic birch, nearly every part is cut from 18 mm plies laminated in pairs. Each ply gets a 5/8" roundover, so every edge shows its laminations as stripes that follow the outline.</p>
     ${sectionFigure()}`,
   contact: () => `<h1 class="display">Contact</h1>
     <p>Titobi Studio, LLC<br>Chicago, Illinois</p>
@@ -445,8 +470,8 @@ function renderPage(main) {
   const key = params.get("p");
   const body = PAGES[key];
   document.title = `${body ? main.dataset.title || key[0].toUpperCase() + key.slice(1) : "Not found"} – Titobi Studio`;
-  const scene = key === "about" && (siteFile("scene-work") || siteFile("scene-dining") || siteFile("scene-entry"));
-  main.innerHTML = (scene ? `<div class="scene-band"><img src="${scene}" alt=""></div>` : "")
+  const scene = key === "about" && ["scene-work", "scene-dining", "scene-entry"].find((n) => siteFile(n));
+  main.innerHTML = (scene ? `<div class="scene-band"><img src="${siteFile(scene)}" alt="" data-scene="${scene}">${woodSwitch(scene)}</div>` : "")
     + `<div class="text-page${scene ? " text-page--after-band" : ""}">${body ? body() : '<h1 class="display">Not found</h1>'}</div>`
     + (key === "about" && S.lineup ? `<div class="about-lineup">${lineupHtml(S.lineup)}</div>` : "");
 }

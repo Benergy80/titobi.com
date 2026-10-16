@@ -44,10 +44,17 @@ h1, h2, h3, p { margin: 0; font-weight: 400; }
 .hero__caption strong { display: block; font-weight: 700; text-transform: uppercase; }
 .hero__caption--dark { color: #000; }
 .hero a.hero__panel { display: block; }
+.hero__fill { position: absolute; inset: 0; display: block; }
+/* room-scene wood switch: Baltic Birch / Walnut / Wenge over the photo */
+.woods { position: absolute; z-index: 2; bottom: 6px; left: calc(var(--gutter) - 7px); display: flex; }  /* phones: under the caption, clear of the header icons */
+.wood { width: 30px; height: 30px; display: grid; place-items: center; }
+.wood::before { content: ""; width: 16px; height: 16px; border-radius: 50%; background: var(--sw); box-shadow: 0 0 0 1px rgb(255 255 255 / 0.85); }
+.wood[aria-checked="true"]::before { box-shadow: 0 0 0 2px #fff, 0 0 0 3px rgb(0 0 0 / 0.3); }
 @media (min-width: 750px) {
   .hero { grid-template-columns: 1fr 1fr; }
   .hero__panel { height: var(--hero-h); }
   .hero__panel + .hero__panel .hero__caption { left: 35px; }
+  .woods { left: auto; right: calc(var(--gutter) - 7px); bottom: 33px; }
 }
 
 /* ---------- Typologies ---------- */
@@ -148,7 +155,7 @@ h1, h2, h3, p { margin: 0; font-weight: 400; }
 .section-fig { margin: 24px 0 0; }
 .section-fig img { width: 100%; max-width: 28rem; }
 .accordion .section-fig img { max-width: 100%; }
-.scene-band { aspect-ratio: 16 / 9; max-height: 80svh; width: 100%; overflow: hidden; background: var(--placeholder); }
+.scene-band { position: relative; aspect-ratio: 16 / 9; max-height: 80svh; width: 100%; overflow: hidden; background: var(--placeholder); }
 .scene-band img { width: 100%; height: 100%; object-fit: cover; }
 .text-page--after-band { padding-top: 64px; }
 
